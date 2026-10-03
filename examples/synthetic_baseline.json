@@ -1,0 +1,843 @@
+{
+  "source_identity": {
+    "base_head": null,
+    "source_content_sha256": "6084f90bebbd8a698014b58a0560497a5b3c5887f2afc83e9418c17ed7446d84",
+    "files_sha256": {
+      "constraints-tested.txt": "b8010d733d5f26bd7ad2c5a42c7274963d74347fbf71e86e998aa65bca73c28e",
+      "examples/decision_lab_cases.json": "342c36d416804190966430298651bc10c5248aa2252db790b3f837ec02bfb5c5",
+      "pyproject.toml": "f24a131364fe7119e411ad59dffd6127622ac66cb85ff81a79777fd6e9879540",
+      "scripts/audit_dataset.py": "330c4dd797849946ad7b97825594f914f32cb60559764bba64c5ba5244ebaa2b",
+      "scripts/download_bts.py": "68b814358fc9d882cf2f6910272184312244a2f01d4085ac4657756216dcecb3",
+      "scripts/preprocess_bts.py": "b8d9fb9512bf406ab8c5f060722e42f4d10e4bac2baf9926eec18f39189fcf59",
+      "scripts/run_baseline.py": "4547a242a5e1869ae1d7e2a885db6ca16c2377ce9901b2f9f662889b26bc6635",
+      "scripts/run_calibration.py": "756c9c286da14c5907c24048c7ad0b5ed1878e18f444dd66980728cc608c2fe5",
+      "scripts/run_decision_lab.py": "68da77abb109a84496481da4d92b6b25650968fb4ae3fc4ed52dc28ef6354ca3",
+      "scripts/run_heldout.py": "a843d8bfbc1f8c59a1ea1674ca705385c8994713a2ee337dc1c189be04263521",
+      "scripts/run_learning.py": "b6450f8e2b78b1309e6e9cc605506ff276dc847ff7d8ec031e64b46557864562",
+      "scripts/run_local_heldout.py": "267764c38adeebe2d0e70be74c1391b66db82a2bf133ac6afb40273380a9e2a7",
+      "scripts/run_local_policy.py": "f36ef3f3180068272a80eef5f0402420e98c0b4d529ddc527e80a2b01ddefe91",
+      "scripts/run_prebooked.py": "78df7e1b05b3a2ed1b6a29d9bd2605baaedbe793a79277d1ee905fb0d883278e",
+      "scripts/run_recovery.py": "019b5848f119b7d9da16cbc21700dd2f9d54e1769c5033c415df309e05e56ac5",
+      "scripts/run_robustness.py": "f8103c065ef6b43a30739bc7003b5f6fe477521c168d119b243b38591768f3d7",
+      "scripts/run_synthetic.py": "b3378afeb5275ea70a481a0e1b376c905cd20a6d828a36561439a564df3cac97",
+      "src/flight_rl/__init__.py": "571c6690a30d5ad482d63753b0b4ac5219a88613d3118b5f732ecaa57a362a81",
+      "src/flight_rl/baselines.py": "accd92c528addce5d5c7868273eca3e1245122da98e7274f9c49101eaece95ad",
+      "src/flight_rl/calibration.py": "abfd0c4cf9bbb4af6579b7d521d1390221270fb9e40bf22fe809a039067c53b1",
+      "src/flight_rl/candidates.py": "bcd276ce574caf230fed27324d775fa82839765288e4c6f72ca5597b90280c11",
+      "src/flight_rl/data.py": "97ec521b22dc0c39f9252ad924aabcbb1c3ba3b5c2e4befbf3d0e8551de53d6a",
+      "src/flight_rl/decision_lab.py": "deb077c3547d1c306ca4875ee7b51f9dbe2104f8767cb7c294b3e4b82b76ecb3",
+      "src/flight_rl/env.py": "2bf21a2c110e3555c64e73de8027ff54fbbf2523f2783c7c24c8ed7525ca7ef6",
+      "src/flight_rl/evaluation.py": "2237c5b9729408e980bd97eeb56cb431a3db61b07154979f2165b1c01a382891",
+      "src/flight_rl/experiments.py": "7ade937198a8c4ad5d7f9a5449a649c09b6c54b2f9dea529aad3b28f717b49e6",
+      "src/flight_rl/fixtures.py": "c08bc0be76ae5d33bd481a492f7971802e2e0d3d437327effff3b80ce6478a5e",
+      "src/flight_rl/lab.html": "fb6567a22ee96e7f82f6b655810f3c688362f1ab32e32ac0a390ba5a5a25299c",
+      "src/flight_rl/learning.py": "687a29607308df69a01d1eff2450c73603cb42367c763087a429f9dd40f1874b",
+      "src/flight_rl/llm_policy.py": "8eb26a245112056bc0e39cdc5f1bf74d0c3e15a0a1cc4cf1d5180e504124b3ee",
+      "src/flight_rl/models.py": "ae620df041aa7d3fc256712790dd53079632aef0b719396b5d6d6f4eb5ecc496",
+      "src/flight_rl/planning.py": "6f91851cd797945596046654a1c6fe69e87c9a7c1c36139cce6f162258ee5f5b",
+      "src/flight_rl/prebooked.py": "f353edf53a4866404f90513a33c57b97773c92afa87ad06839a557c26abf4c90",
+      "src/flight_rl/provenance.py": "634d7bb9a4cb8fdcbfddc9375c910dd2f910b8b135fc036a4b9d07e702addbe1",
+      "src/flight_rl/recovery.py": "2abf1a1c33f4877639ad6e25c40e08287095bcbf45fc3a7a4c3c6899a392d1b5",
+      "src/flight_rl/robustness.py": "56c3b6b6fef1170f620e5e751c2119d405e07e86d46c6ecaa119dfe7829bca08",
+      "src/flight_rl/scenarios.py": "be4b0616f32a85bb277ec06f9c584214884f0b3cbb4a22de733edd00a92053e2",
+      "src/flight_rl/source_auth.py": "39204f103170e357e754ca4e6d3d1b8c4f5ce0dd141184da9470f23a84a4e1f3",
+      "src/flight_rl/split_data.py": "6e17a1e82b679906519056acb2039b664cdc1eb97a82076374f9da7073e902d9",
+      "src/flight_rl/verifier.py": "1c2fd56d634dffc54a9207bacfcbd7fcc76d28cd54e697dd93afb2e967f5ba09"
+    },
+    "source_hash_format": "sha256-crlf-to-lf-v1",
+    "identity_scope": "Actual Python/HTML source, scripts, decision-lab case catalog and direct dependency configuration; CRLF is normalized to LF; all other bytes, including working-tree changes beyond HEAD, are hashed. Dataset hashes remain byte-exact."
+  },
+  "command_arguments": [
+    "--fixture",
+    "--policy",
+    "all",
+    "--episodes",
+    "100",
+    "--seed",
+    "42",
+    "--trace-count",
+    "1",
+    "--out",
+    "examples/synthetic_baseline.json"
+  ],
+  "request": {
+    "origin": "SFO",
+    "destination": "JFK",
+    "ready_utc": 28422000,
+    "deadline_utc": 28422660,
+    "horizon_utc": 28423440,
+    "max_attempts": 3,
+    "min_connection_min": 45,
+    "delay_budget_min": 180
+  },
+  "ready_iso": "2024-01-15T12:00:00+00:00",
+  "score_profile": "deadline_first_v1",
+  "reward_mode": "deadline_first",
+  "provenance": {
+    "source": "synthetic_fixture",
+    "historical_coverage": false
+  },
+  "max_candidates": 64,
+  "versions": {
+    "gymnasium": "1.3.0",
+    "numpy": "2.4.6",
+    "pandas": "3.0.5",
+    "pyarrow": "25.0.1"
+  },
+  "results": {
+    "random": {
+      "episodes": 100,
+      "seed": 42,
+      "score_profile": "deadline_first_v1",
+      "source_authenticated_episodes": 100,
+      "verification_scope": "Canonical schedule and eligible transition-donor payloads; not RNG-draw provenance",
+      "reward_mode": "deadline_first",
+      "arrived": 79,
+      "on_time_arrivals": 71,
+      "invalid_records": 0,
+      "arrival_rate": 0.79,
+      "on_time_arrival_rate": 0.71,
+      "arrival_rate_interval95": [
+        0.7002003116591013,
+        0.858343459380847
+      ],
+      "on_time_arrival_rate_interval95": [
+        0.6146110882442888,
+        0.7898516425087772
+      ],
+      "mean_score": 0.6956874999999999,
+      "mean_legacy_six_v1": 0.7283333333333336,
+      "mean_return": 0.6956874999999999,
+      "mean_elapsed_given_arrival_min": 552.5316455696203,
+      "disruption_rate": 0.21,
+      "termination_counts": {
+        "arrived": 79,
+        "cancelled": 18,
+        "no_candidates": 3
+      },
+      "traces": [
+        {
+          "episode": 0,
+          "seed": 42,
+          "actions": [
+            1,
+            0
+          ],
+          "record": {
+            "request": {
+              "origin": "SFO",
+              "destination": "JFK",
+              "ready_utc": 28422000,
+              "deadline_utc": 28422660,
+              "horizon_utc": 28423440,
+              "max_attempts": 3,
+              "min_connection_min": 45,
+              "delay_budget_min": 180
+            },
+            "legs": [
+              {
+                "flight": {
+                  "flight_id": "demo-SFO-ORD",
+                  "origin": "SFO",
+                  "dest": "ORD",
+                  "carrier": "DEMO",
+                  "scheduled_departure_utc": 28422120,
+                  "scheduled_arrival_utc": 28422360,
+                  "flight_date": "2024-01-15",
+                  "dep_hour_bucket": 2,
+                  "season": "DJF",
+                  "operating_carrier": "",
+                  "operating_flight_number": ""
+                },
+                "outcome": {
+                  "donor_id": "demo-SFO-ORD-ok-0",
+                  "cancelled": false,
+                  "diverted": false,
+                  "dep_delay_min": 0.0,
+                  "arr_delay_min": 0.0,
+                  "actual_elapsed_min": 240.0,
+                  "div_reached_dest": false,
+                  "div_arr_delay_min": null,
+                  "div_actual_elapsed_min": null,
+                  "div_airport": null,
+                  "support": 10,
+                  "fallback_level": "fixture"
+                },
+                "departure_utc": 28422120,
+                "arrival_utc": 28422360,
+                "resolved_airport": "ORD"
+              },
+              {
+                "flight": {
+                  "flight_id": "demo-ORD-JFK",
+                  "origin": "ORD",
+                  "dest": "JFK",
+                  "carrier": "DEMO",
+                  "scheduled_departure_utc": 28422420,
+                  "scheduled_arrival_utc": 28422570,
+                  "flight_date": "2024-01-15",
+                  "dep_hour_bucket": 2,
+                  "season": "DJF",
+                  "operating_carrier": "",
+                  "operating_flight_number": ""
+                },
+                "outcome": {
+                  "donor_id": "demo-ORD-JFK-ok-7",
+                  "cancelled": false,
+                  "diverted": false,
+                  "dep_delay_min": 0.0,
+                  "arr_delay_min": 0.0,
+                  "actual_elapsed_min": 150.0,
+                  "div_reached_dest": false,
+                  "div_arr_delay_min": null,
+                  "div_actual_elapsed_min": null,
+                  "div_airport": null,
+                  "support": 10,
+                  "fallback_level": "fixture"
+                },
+                "departure_utc": 28422420,
+                "arrival_utc": 28422570,
+                "resolved_airport": "JFK"
+              }
+            ],
+            "final_airport": "JFK",
+            "clock_utc": 28422570,
+            "termination_reason": "arrived"
+          },
+          "verification": {
+            "aggregate_score": 0.9604166666666667,
+            "breakdown": [
+              {
+                "name": "on_time_arrival",
+                "raw_score": 1.0,
+                "weight": 0.8,
+                "weighted_contribution": 0.8
+              },
+              {
+                "name": "arrived",
+                "raw_score": 1.0,
+                "weight": 0.1,
+                "weighted_contribution": 0.1
+              },
+              {
+                "name": "earliness",
+                "raw_score": 0.6041666666666666,
+                "weight": 0.1,
+                "weighted_contribution": 0.06041666666666667
+              }
+            ]
+          },
+          "source_authentication": {
+            "authenticated": true,
+            "reason": "authenticated",
+            "leg_index": null
+          },
+          "legacy_six_v1_verification": {
+            "aggregate_score": 0.9166666666666667,
+            "breakdown": [
+              {
+                "name": "arrived",
+                "raw_score": 1.0,
+                "weight": 0.4,
+                "weighted_contribution": 0.4
+              },
+              {
+                "name": "on_time_arrival",
+                "raw_score": 1.0,
+                "weight": 0.25,
+                "weighted_contribution": 0.25
+              },
+              {
+                "name": "total_delay",
+                "raw_score": 1.0,
+                "weight": 0.1,
+                "weighted_contribution": 0.1
+              },
+              {
+                "name": "connections_count",
+                "raw_score": 0.5,
+                "weight": 0.1,
+                "weighted_contribution": 0.05
+              },
+              {
+                "name": "cancellation_exposure",
+                "raw_score": 1.0,
+                "weight": 0.05,
+                "weighted_contribution": 0.05
+              },
+              {
+                "name": "connection_buffer",
+                "raw_score": 0.6666666666666666,
+                "weight": 0.1,
+                "weighted_contribution": 0.06666666666666667
+              }
+            ]
+          },
+          "metrics": {
+            "validity": true,
+            "arrived": true,
+            "on_time_arrival": true,
+            "elapsed_min": 570,
+            "disrupted": false,
+            "attempts": 2,
+            "termination_reason": "arrived"
+          },
+          "return": 0.9604166666666667
+        }
+      ],
+      "interval_scope": "IID simulator draws conditional on this fixed request and data source; not historical-model, training, or causal uncertainty"
+    },
+    "nonstop_first": {
+      "episodes": 100,
+      "seed": 42,
+      "score_profile": "deadline_first_v1",
+      "source_authenticated_episodes": 100,
+      "verification_scope": "Canonical schedule and eligible transition-donor payloads; not RNG-draw provenance",
+      "reward_mode": "deadline_first",
+      "arrived": 89,
+      "on_time_arrivals": 83,
+      "invalid_records": 0,
+      "arrival_rate": 0.89,
+      "on_time_arrival_rate": 0.83,
+      "arrival_rate_interval95": [
+        0.8136870349691969,
+        0.9374580364293543
+      ],
+      "on_time_arrival_rate_interval95": [
+        0.7445199523239887,
+        0.8910643388594006
+      ],
+      "mean_score": 0.8097291666666669,
+      "mean_legacy_six_v1": 0.8690000000000001,
+      "mean_return": 0.8097291666666669,
+      "mean_elapsed_given_arrival_min": 522.1348314606741,
+      "disruption_rate": 0.17,
+      "termination_counts": {
+        "arrived": 89,
+        "cancelled": 11
+      },
+      "traces": [
+        {
+          "episode": 0,
+          "seed": 42,
+          "actions": [
+            2
+          ],
+          "record": {
+            "request": {
+              "origin": "SFO",
+              "destination": "JFK",
+              "ready_utc": 28422000,
+              "deadline_utc": 28422660,
+              "horizon_utc": 28423440,
+              "max_attempts": 3,
+              "min_connection_min": 45,
+              "delay_budget_min": 180
+            },
+            "legs": [
+              {
+                "flight": {
+                  "flight_id": "demo-SFO-JFK",
+                  "origin": "SFO",
+                  "dest": "JFK",
+                  "carrier": "DEMO",
+                  "scheduled_departure_utc": 28422180,
+                  "scheduled_arrival_utc": 28422510,
+                  "flight_date": "2024-01-15",
+                  "dep_hour_bucket": 2,
+                  "season": "DJF",
+                  "operating_carrier": "",
+                  "operating_flight_number": ""
+                },
+                "outcome": {
+                  "donor_id": "demo-SFO-JFK-ok-0",
+                  "cancelled": false,
+                  "diverted": false,
+                  "dep_delay_min": 0.0,
+                  "arr_delay_min": 0.0,
+                  "actual_elapsed_min": 330.0,
+                  "div_reached_dest": false,
+                  "div_arr_delay_min": null,
+                  "div_actual_elapsed_min": null,
+                  "div_airport": null,
+                  "support": 10,
+                  "fallback_level": "fixture"
+                },
+                "departure_utc": 28422180,
+                "arrival_utc": 28422510,
+                "resolved_airport": "JFK"
+              }
+            ],
+            "final_airport": "JFK",
+            "clock_utc": 28422510,
+            "termination_reason": "arrived"
+          },
+          "verification": {
+            "aggregate_score": 0.9645833333333333,
+            "breakdown": [
+              {
+                "name": "on_time_arrival",
+                "raw_score": 1.0,
+                "weight": 0.8,
+                "weighted_contribution": 0.8
+              },
+              {
+                "name": "arrived",
+                "raw_score": 1.0,
+                "weight": 0.1,
+                "weighted_contribution": 0.1
+              },
+              {
+                "name": "earliness",
+                "raw_score": 0.6458333333333334,
+                "weight": 0.1,
+                "weighted_contribution": 0.06458333333333334
+              }
+            ]
+          },
+          "source_authentication": {
+            "authenticated": true,
+            "reason": "authenticated",
+            "leg_index": null
+          },
+          "legacy_six_v1_verification": {
+            "aggregate_score": 1.0,
+            "breakdown": [
+              {
+                "name": "arrived",
+                "raw_score": 1.0,
+                "weight": 0.4,
+                "weighted_contribution": 0.4
+              },
+              {
+                "name": "on_time_arrival",
+                "raw_score": 1.0,
+                "weight": 0.25,
+                "weighted_contribution": 0.25
+              },
+              {
+                "name": "total_delay",
+                "raw_score": 1.0,
+                "weight": 0.1,
+                "weighted_contribution": 0.1
+              },
+              {
+                "name": "connections_count",
+                "raw_score": 1.0,
+                "weight": 0.1,
+                "weighted_contribution": 0.1
+              },
+              {
+                "name": "cancellation_exposure",
+                "raw_score": 1.0,
+                "weight": 0.05,
+                "weighted_contribution": 0.05
+              },
+              {
+                "name": "connection_buffer",
+                "raw_score": 1.0,
+                "weight": 0.1,
+                "weighted_contribution": 0.1
+              }
+            ]
+          },
+          "metrics": {
+            "validity": true,
+            "arrived": true,
+            "on_time_arrival": true,
+            "elapsed_min": 510,
+            "disrupted": false,
+            "attempts": 1,
+            "termination_reason": "arrived"
+          },
+          "return": 0.9645833333333333
+        }
+      ],
+      "interval_scope": "IID simulator draws conditional on this fixed request and data source; not historical-model, training, or causal uncertainty"
+    },
+    "shortest_scheduled": {
+      "episodes": 100,
+      "seed": 42,
+      "score_profile": "deadline_first_v1",
+      "source_authenticated_episodes": 100,
+      "verification_scope": "Canonical schedule and eligible transition-donor payloads; not RNG-draw provenance",
+      "reward_mode": "deadline_first",
+      "arrived": 70,
+      "on_time_arrivals": 61,
+      "invalid_records": 0,
+      "arrival_rate": 0.7,
+      "on_time_arrival_rate": 0.61,
+      "arrival_rate_interval95": [
+        0.6041514536665332,
+        0.7810511470506724
+      ],
+      "on_time_arrival_rate_interval95": [
+        0.5120301704584073,
+        0.6998312599360558
+      ],
+      "mean_score": 0.6020833333333332,
+      "mean_legacy_six_v1": 0.6335000000000002,
+      "mean_return": 0.6020833333333332,
+      "mean_elapsed_given_arrival_min": 533.1428571428571,
+      "disruption_rate": 0.24,
+      "termination_counts": {
+        "arrived": 70,
+        "cancelled": 24,
+        "no_candidates": 6
+      },
+      "traces": [
+        {
+          "episode": 0,
+          "seed": 42,
+          "actions": [
+            0,
+            0
+          ],
+          "record": {
+            "request": {
+              "origin": "SFO",
+              "destination": "JFK",
+              "ready_utc": 28422000,
+              "deadline_utc": 28422660,
+              "horizon_utc": 28423440,
+              "max_attempts": 3,
+              "min_connection_min": 45,
+              "delay_budget_min": 180
+            },
+            "legs": [
+              {
+                "flight": {
+                  "flight_id": "demo-SFO-DEN",
+                  "origin": "SFO",
+                  "dest": "DEN",
+                  "carrier": "DEMO",
+                  "scheduled_departure_utc": 28422060,
+                  "scheduled_arrival_utc": 28422210,
+                  "flight_date": "2024-01-15",
+                  "dep_hour_bucket": 2,
+                  "season": "DJF",
+                  "operating_carrier": "",
+                  "operating_flight_number": ""
+                },
+                "outcome": {
+                  "donor_id": "demo-SFO-DEN-ok-0",
+                  "cancelled": false,
+                  "diverted": false,
+                  "dep_delay_min": 0.0,
+                  "arr_delay_min": 0.0,
+                  "actual_elapsed_min": 150.0,
+                  "div_reached_dest": false,
+                  "div_arr_delay_min": null,
+                  "div_actual_elapsed_min": null,
+                  "div_airport": null,
+                  "support": 10,
+                  "fallback_level": "fixture"
+                },
+                "departure_utc": 28422060,
+                "arrival_utc": 28422210,
+                "resolved_airport": "DEN"
+              },
+              {
+                "flight": {
+                  "flight_id": "demo-DEN-JFK",
+                  "origin": "DEN",
+                  "dest": "JFK",
+                  "carrier": "DEMO",
+                  "scheduled_departure_utc": 28422300,
+                  "scheduled_arrival_utc": 28422510,
+                  "flight_date": "2024-01-15",
+                  "dep_hour_bucket": 2,
+                  "season": "DJF",
+                  "operating_carrier": "",
+                  "operating_flight_number": ""
+                },
+                "outcome": {
+                  "donor_id": "demo-DEN-JFK-ok-7",
+                  "cancelled": false,
+                  "diverted": false,
+                  "dep_delay_min": 0.0,
+                  "arr_delay_min": 0.0,
+                  "actual_elapsed_min": 210.0,
+                  "div_reached_dest": false,
+                  "div_arr_delay_min": null,
+                  "div_actual_elapsed_min": null,
+                  "div_airport": null,
+                  "support": 10,
+                  "fallback_level": "fixture"
+                },
+                "departure_utc": 28422300,
+                "arrival_utc": 28422510,
+                "resolved_airport": "JFK"
+              }
+            ],
+            "final_airport": "JFK",
+            "clock_utc": 28422510,
+            "termination_reason": "arrived"
+          },
+          "verification": {
+            "aggregate_score": 0.9645833333333333,
+            "breakdown": [
+              {
+                "name": "on_time_arrival",
+                "raw_score": 1.0,
+                "weight": 0.8,
+                "weighted_contribution": 0.8
+              },
+              {
+                "name": "arrived",
+                "raw_score": 1.0,
+                "weight": 0.1,
+                "weighted_contribution": 0.1
+              },
+              {
+                "name": "earliness",
+                "raw_score": 0.6458333333333334,
+                "weight": 0.1,
+                "weighted_contribution": 0.06458333333333334
+              }
+            ]
+          },
+          "source_authentication": {
+            "authenticated": true,
+            "reason": "authenticated",
+            "leg_index": null
+          },
+          "legacy_six_v1_verification": {
+            "aggregate_score": 0.9500000000000001,
+            "breakdown": [
+              {
+                "name": "arrived",
+                "raw_score": 1.0,
+                "weight": 0.4,
+                "weighted_contribution": 0.4
+              },
+              {
+                "name": "on_time_arrival",
+                "raw_score": 1.0,
+                "weight": 0.25,
+                "weighted_contribution": 0.25
+              },
+              {
+                "name": "total_delay",
+                "raw_score": 1.0,
+                "weight": 0.1,
+                "weighted_contribution": 0.1
+              },
+              {
+                "name": "connections_count",
+                "raw_score": 0.5,
+                "weight": 0.1,
+                "weighted_contribution": 0.05
+              },
+              {
+                "name": "cancellation_exposure",
+                "raw_score": 1.0,
+                "weight": 0.05,
+                "weighted_contribution": 0.05
+              },
+              {
+                "name": "connection_buffer",
+                "raw_score": 1.0,
+                "weight": 0.1,
+                "weighted_contribution": 0.1
+              }
+            ]
+          },
+          "metrics": {
+            "validity": true,
+            "arrived": true,
+            "on_time_arrival": true,
+            "elapsed_min": 510,
+            "disrupted": false,
+            "attempts": 2,
+            "termination_reason": "arrived"
+          },
+          "return": 0.9645833333333333
+        }
+      ],
+      "interval_scope": "IID simulator draws conditional on this fixed request and data source; not historical-model, training, or causal uncertainty"
+    },
+    "deadline_planner": {
+      "episodes": 100,
+      "seed": 42,
+      "score_profile": "deadline_first_v1",
+      "source_authenticated_episodes": 100,
+      "verification_scope": "Canonical schedule and eligible transition-donor payloads; not RNG-draw provenance",
+      "reward_mode": "deadline_first",
+      "arrived": 89,
+      "on_time_arrivals": 83,
+      "invalid_records": 0,
+      "arrival_rate": 0.89,
+      "on_time_arrival_rate": 0.83,
+      "arrival_rate_interval95": [
+        0.8136870349691969,
+        0.9374580364293543
+      ],
+      "on_time_arrival_rate_interval95": [
+        0.7445199523239887,
+        0.8910643388594006
+      ],
+      "mean_score": 0.8097291666666669,
+      "mean_legacy_six_v1": 0.8690000000000001,
+      "mean_return": 0.8097291666666669,
+      "mean_elapsed_given_arrival_min": 522.1348314606741,
+      "disruption_rate": 0.17,
+      "termination_counts": {
+        "arrived": 89,
+        "cancelled": 11
+      },
+      "traces": [
+        {
+          "episode": 0,
+          "seed": 42,
+          "actions": [
+            2
+          ],
+          "record": {
+            "request": {
+              "origin": "SFO",
+              "destination": "JFK",
+              "ready_utc": 28422000,
+              "deadline_utc": 28422660,
+              "horizon_utc": 28423440,
+              "max_attempts": 3,
+              "min_connection_min": 45,
+              "delay_budget_min": 180
+            },
+            "legs": [
+              {
+                "flight": {
+                  "flight_id": "demo-SFO-JFK",
+                  "origin": "SFO",
+                  "dest": "JFK",
+                  "carrier": "DEMO",
+                  "scheduled_departure_utc": 28422180,
+                  "scheduled_arrival_utc": 28422510,
+                  "flight_date": "2024-01-15",
+                  "dep_hour_bucket": 2,
+                  "season": "DJF",
+                  "operating_carrier": "",
+                  "operating_flight_number": ""
+                },
+                "outcome": {
+                  "donor_id": "demo-SFO-JFK-ok-0",
+                  "cancelled": false,
+                  "diverted": false,
+                  "dep_delay_min": 0.0,
+                  "arr_delay_min": 0.0,
+                  "actual_elapsed_min": 330.0,
+                  "div_reached_dest": false,
+                  "div_arr_delay_min": null,
+                  "div_actual_elapsed_min": null,
+                  "div_airport": null,
+                  "support": 10,
+                  "fallback_level": "fixture"
+                },
+                "departure_utc": 28422180,
+                "arrival_utc": 28422510,
+                "resolved_airport": "JFK"
+              }
+            ],
+            "final_airport": "JFK",
+            "clock_utc": 28422510,
+            "termination_reason": "arrived"
+          },
+          "verification": {
+            "aggregate_score": 0.9645833333333333,
+            "breakdown": [
+              {
+                "name": "on_time_arrival",
+                "raw_score": 1.0,
+                "weight": 0.8,
+                "weighted_contribution": 0.8
+              },
+              {
+                "name": "arrived",
+                "raw_score": 1.0,
+                "weight": 0.1,
+                "weighted_contribution": 0.1
+              },
+              {
+                "name": "earliness",
+                "raw_score": 0.6458333333333334,
+                "weight": 0.1,
+                "weighted_contribution": 0.06458333333333334
+              }
+            ]
+          },
+          "source_authentication": {
+            "authenticated": true,
+            "reason": "authenticated",
+            "leg_index": null
+          },
+          "legacy_six_v1_verification": {
+            "aggregate_score": 1.0,
+            "breakdown": [
+              {
+                "name": "arrived",
+                "raw_score": 1.0,
+                "weight": 0.4,
+                "weighted_contribution": 0.4
+              },
+              {
+                "name": "on_time_arrival",
+                "raw_score": 1.0,
+                "weight": 0.25,
+                "weighted_contribution": 0.25
+              },
+              {
+                "name": "total_delay",
+                "raw_score": 1.0,
+                "weight": 0.1,
+                "weighted_contribution": 0.1
+              },
+              {
+                "name": "connections_count",
+                "raw_score": 1.0,
+                "weight": 0.1,
+                "weighted_contribution": 0.1
+              },
+              {
+                "name": "cancellation_exposure",
+                "raw_score": 1.0,
+                "weight": 0.05,
+                "weighted_contribution": 0.05
+              },
+              {
+                "name": "connection_buffer",
+                "raw_score": 1.0,
+                "weight": 0.1,
+                "weighted_contribution": 0.1
+              }
+            ]
+          },
+          "metrics": {
+            "validity": true,
+            "arrived": true,
+            "on_time_arrival": true,
+            "elapsed_min": 510,
+            "disrupted": false,
+            "attempts": 1,
+            "termination_reason": "arrived"
+          },
+          "return": 0.9645833333333333
+        }
+      ],
+      "interval_scope": "IID simulator draws conditional on this fixed request and data source; not historical-model, training, or causal uncertainty",
+      "policy_details": {
+        "objective": "on_time_arrival",
+        "max_candidates": 64,
+        "max_branches": 12,
+        "time_bin_min": 15,
+        "outcome_bins": 8,
+        "assumption": "independent historical donors; future candidates capped",
+        "value_cache": {
+          "hits": 0,
+          "misses": 4,
+          "maxsize": 50000,
+          "currsize": 4
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,44 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gatebound-rl"
+version = "0.1.0"
+description = "Gatebound: auditable flight-routing RL, source-backed verification and replay."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+    { name = "Sahil Kadadekar" },
+]
+dependencies = [
+    "gymnasium>=0.29",
+    "numpy>=1.26",
+    "pandas>=2.2",
+    "pyarrow>=15.0",
+    "requests>=2.31",
+    "airportsdata==20260905",
+    "tzdata>=2025.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.4",
+]
+
+[project.urls]
+Repository = "https://github.com/Sahil170595/gatebound-rl"
+Portfolio = "https://chimeraforge.vercel.app/work"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/flight_rl"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

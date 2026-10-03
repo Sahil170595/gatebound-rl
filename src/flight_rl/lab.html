@@ -1,0 +1,3387 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Gatebound Decision Lab</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23102c3c'/%3E%3Cpath d='M12 35l16-5 9-15 5 1-5 14 14 5-2 4-15-2-7 12-4-1 4-13-13 4z' fill='%23ffb187'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --paper: #f4f0e7;
+      --paper-deep: #e9e2d5;
+      --card: #fffdf8;
+      --ink: #172b39;
+      --ink-soft: #50616a;
+      --line: #d4cec0;
+      --line-dark: #9da7a6;
+      --navy: #102c3c;
+      --navy-2: #173d4d;
+      --orange: #d9602e;
+      --orange-soft: #f8dfd2;
+      --teal: #0b746d;
+      --teal-soft: #dcece7;
+      --sand: #f0e8d8;
+      --red: #a13d32;
+      --red-soft: #f7e1dd;
+      --shadow: 0 18px 48px rgba(20, 40, 51, 0.10);
+      --radius: 18px;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      --sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 78% 3%, rgba(217, 96, 46, 0.08), transparent 26rem),
+        linear-gradient(rgba(16, 44, 60, 0.026) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 44, 60, 0.026) 1px, transparent 1px),
+        var(--paper);
+      background-size: auto, 26px 26px, 26px 26px, auto;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button,
+    select {
+      cursor: pointer;
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid rgba(217, 96, 46, 0.35);
+      outline-offset: 2px;
+    }
+
+    button:disabled,
+    select:disabled,
+    input:disabled {
+      cursor: not-allowed;
+      opacity: 0.52;
+    }
+
+    .shell {
+      width: min(1500px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 22px 0 54px;
+    }
+
+    .masthead {
+      position: relative;
+      overflow: hidden;
+      min-height: 210px;
+      color: #fff;
+      border-radius: 24px;
+      background:
+        linear-gradient(110deg, rgba(255, 255, 255, 0.04), transparent 46%),
+        var(--navy);
+      box-shadow: var(--shadow);
+    }
+
+    .masthead::after {
+      position: absolute;
+      right: -64px;
+      bottom: -104px;
+      width: 420px;
+      height: 260px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 42px rgba(255, 255, 255, 0.025),
+        0 0 0 84px rgba(255, 255, 255, 0.018);
+      content: "";
+      pointer-events: none;
+      transform: rotate(-12deg);
+    }
+
+    .masthead-top {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 21px 26px 17px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      display: grid;
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      color: #fff;
+      font-size: 15px;
+      transform: rotate(-12deg);
+    }
+
+    .eyebrow {
+      margin: 0;
+      color: inherit;
+      font-size: 11px;
+      font-weight: 750;
+      letter-spacing: 0.16em;
+      line-height: 1.3;
+      text-transform: uppercase;
+    }
+
+    .brand-subtitle {
+      margin: 2px 0 0;
+      color: rgba(255, 255, 255, 0.66);
+      font-size: 12px;
+    }
+
+    .mode-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+      padding: 7px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .mode-chip::before {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #66c4b8;
+      content: "";
+      box-shadow: 0 0 0 4px rgba(102, 196, 184, 0.12);
+    }
+
+    .route-brief {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(390px, 0.9fr);
+      gap: 30px;
+      align-items: center;
+      padding: 23px 27px 27px;
+    }
+
+    .route-copy h1 {
+      max-width: 720px;
+      margin: 6px 0 8px;
+      font-size: clamp(25px, 3vw, 43px);
+      font-weight: 690;
+      letter-spacing: -0.035em;
+      line-height: 1.04;
+    }
+
+    .route-case-name {
+      margin: 15px 0 4px;
+      color: #ffb187;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .route-description {
+      max-width: 700px;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.68);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .route-board {
+      min-width: 0;
+      padding: 16px 19px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 16px;
+      background: rgba(0, 0, 0, 0.11);
+    }
+
+    .route-airports {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .airport-block {
+      min-width: 78px;
+    }
+
+    .airport-block:last-child {
+      text-align: right;
+    }
+
+    .airport-code {
+      display: block;
+      font-family: var(--mono);
+      font-size: clamp(25px, 3vw, 39px);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .airport-caption {
+      color: rgba(255, 255, 255, 0.56);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .route-arc {
+      position: relative;
+      flex: 1 1 auto;
+      height: 42px;
+      min-width: 110px;
+      overflow: hidden;
+    }
+
+    .route-arc::before {
+      position: absolute;
+      top: 19px;
+      left: 1px;
+      width: calc(100% - 2px);
+      height: 46px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.46);
+      border-radius: 50%;
+      content: "";
+      transform: translateY(-13px);
+    }
+
+    .plane {
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      width: 24px;
+      height: 24px;
+      color: #ffb187;
+      font-size: 18px;
+      line-height: 24px;
+      text-align: center;
+      transform: translateX(-50%) rotate(5deg);
+    }
+
+    .route-times {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 9px;
+      margin-top: 12px;
+      padding-top: 11px;
+      border-top: 1px solid rgba(255, 255, 255, 0.11);
+    }
+
+    .route-times dt,
+    .route-times dd {
+      margin: 0;
+    }
+
+    .route-times dt {
+      color: rgba(255, 255, 255, 0.46);
+      font-size: 9px;
+      font-weight: 750;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .route-times dd {
+      margin-top: 4px;
+      color: rgba(255, 255, 255, 0.9);
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .control-deck {
+      position: relative;
+      z-index: 3;
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(160px, 0.55fr) minmax(210px, 0.72fr);
+      gap: 18px;
+      align-items: end;
+      margin: -8px 18px 0;
+      padding: 17px 18px;
+      border: 1px solid rgba(23, 43, 57, 0.11);
+      border-radius: 17px;
+      background: rgba(255, 253, 248, 0.97);
+      box-shadow: 0 12px 30px rgba(20, 40, 51, 0.08);
+    }
+
+    .control-deck > div {
+      min-width: 0;
+    }
+
+    .control-label {
+      display: block;
+      margin: 0 0 7px;
+      color: var(--ink-soft);
+      font-size: 10px;
+      font-weight: 780;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .case-pills {
+      display: flex;
+      gap: 8px;
+      min-width: 0;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+
+    .case-pill {
+      min-width: max-content;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbf8f1;
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 700;
+      text-align: left;
+      transition: 140ms ease;
+    }
+
+    .case-pill:hover {
+      border-color: var(--line-dark);
+      transform: translateY(-1px);
+    }
+
+    .case-pill[aria-pressed="true"] {
+      border-color: var(--navy);
+      background: var(--navy);
+      color: #fff;
+      box-shadow: 0 5px 12px rgba(16, 44, 60, 0.17);
+    }
+
+    .seed-control {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 7px;
+    }
+
+    .field,
+    .select-field {
+      width: 100%;
+      height: 39px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: #fff;
+      color: var(--ink);
+      box-shadow: inset 0 1px 1px rgba(23, 43, 57, 0.04);
+    }
+
+    .field {
+      min-width: 0;
+      padding: 0 10px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .select-field {
+      padding: 0 34px 0 10px;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .icon-button {
+      width: 39px;
+      height: 39px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--sand);
+      color: var(--navy);
+      font-size: 17px;
+      font-weight: 800;
+      transition: 140ms ease;
+    }
+
+    .icon-button:hover {
+      border-color: var(--orange);
+      color: var(--orange);
+    }
+
+    .status-region {
+      position: sticky;
+      z-index: 8;
+      top: 10px;
+      margin: 14px 18px 0;
+    }
+
+    .status-banner {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 11px 14px;
+      border: 1px solid #d0c38d;
+      border-radius: 11px;
+      background: #fff8d9;
+      box-shadow: 0 8px 22px rgba(23, 43, 57, 0.08);
+      color: #614d12;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .status-banner.visible {
+      display: flex;
+    }
+
+    .status-banner.error {
+      border-color: #d89b91;
+      background: #fff0ed;
+      color: #743029;
+    }
+
+    .status-banner.loading {
+      border-color: #9fc3be;
+      background: #eff8f5;
+      color: #145e59;
+    }
+
+    .status-banner button {
+      flex: 0 0 auto;
+      padding: 6px 10px;
+      border: 1px solid currentColor;
+      border-radius: 7px;
+      background: transparent;
+      color: inherit;
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(390px, 0.92fr) minmax(520px, 1.38fr);
+      gap: 15px;
+      align-items: start;
+      margin: 15px 18px 0;
+    }
+
+    .panel {
+      min-width: 0;
+      border: 1px solid rgba(23, 43, 57, 0.12);
+      border-radius: var(--radius);
+      background: rgba(255, 253, 248, 0.97);
+      box-shadow: 0 8px 28px rgba(20, 40, 51, 0.055);
+    }
+
+    .panel-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 17px 18px 13px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .panel-heading h2,
+    .panel-heading h3 {
+      margin: 2px 0 0;
+      font-size: 17px;
+      font-weight: 720;
+      letter-spacing: -0.015em;
+    }
+
+    .section-kicker {
+      margin: 0;
+      color: var(--orange);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    .tool-button,
+    .secondary-button,
+    .primary-button {
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 740;
+      transition: 130ms ease;
+    }
+
+    .tool-button {
+      min-height: 31px;
+      padding: 6px 9px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink-soft);
+    }
+
+    .tool-button:hover:not(:disabled),
+    .secondary-button:hover:not(:disabled) {
+      border-color: var(--navy);
+      color: var(--navy);
+    }
+
+    .timeline-wrap {
+      padding: 5px 18px 16px;
+    }
+
+    .timeline {
+      position: relative;
+      min-height: 180px;
+      margin: 0;
+      padding: 10px 0 2px;
+      list-style: none;
+    }
+
+    .timeline::before {
+      position: absolute;
+      top: 21px;
+      bottom: 23px;
+      left: 19px;
+      width: 1px;
+      background: var(--line);
+      content: "";
+    }
+
+    .timeline-empty {
+      display: grid;
+      min-height: 170px;
+      place-items: center;
+      color: var(--ink-soft);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .timeline-step {
+      position: relative;
+      margin: 0 0 8px;
+      padding-left: 44px;
+    }
+
+    .step-node {
+      position: absolute;
+      z-index: 1;
+      top: 14px;
+      left: 12px;
+      display: grid;
+      width: 15px;
+      height: 15px;
+      place-items: center;
+      border: 3px solid var(--card);
+      border-radius: 50%;
+      background: var(--line-dark);
+      box-shadow: 0 0 0 1px var(--line);
+    }
+
+    .timeline-step.selected .step-node {
+      background: var(--orange);
+      box-shadow: 0 0 0 2px rgba(217, 96, 46, 0.23);
+    }
+
+    .step-card {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid transparent;
+      border-radius: 11px;
+      background: transparent;
+      color: var(--ink);
+      text-align: left;
+      transition: 130ms ease;
+    }
+
+    .step-card:hover {
+      border-color: var(--line);
+      background: #faf6ee;
+    }
+
+    .timeline-step.selected .step-card {
+      border-color: #e0a186;
+      background: #fff5ef;
+    }
+
+    .step-topline,
+    .step-flightline,
+    .step-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .step-index {
+      color: var(--ink-soft);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .step-clock {
+      color: var(--ink-soft);
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+
+    .step-flightline {
+      align-items: baseline;
+      margin-top: 5px;
+    }
+
+    .step-route {
+      font-family: var(--mono);
+      font-size: 15px;
+      font-weight: 750;
+      letter-spacing: 0.02em;
+    }
+
+    .step-flight {
+      overflow: hidden;
+      color: var(--ink-soft);
+      font-size: 11px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .step-foot {
+      justify-content: flex-start;
+      margin-top: 7px;
+    }
+
+    .step-outcome {
+      margin: 7px 0 0;
+      color: var(--ink-soft);
+      font-size: 10px;
+      line-height: 1.4;
+    }
+
+    .mini-tag,
+    .status-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 20px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      font-size: 9px;
+      font-weight: 780;
+      letter-spacing: 0.04em;
+      line-height: 1.15;
+      text-transform: uppercase;
+    }
+
+    .mini-tag {
+      background: var(--sand);
+      color: var(--ink-soft);
+    }
+
+    .mini-tag.recommended {
+      background: var(--teal-soft);
+      color: var(--teal);
+    }
+
+    .mini-tag.changed {
+      background: var(--orange-soft);
+      color: #99431f;
+    }
+
+    .status-tag.good {
+      background: var(--teal-soft);
+      color: var(--teal);
+    }
+
+    .status-tag.warn {
+      background: var(--orange-soft);
+      color: #93401e;
+    }
+
+    .status-tag.bad {
+      background: var(--red-soft);
+      color: var(--red);
+    }
+
+    .terminal-card {
+      position: relative;
+      margin: 11px 0 2px 44px;
+      padding: 11px 12px;
+      border: 1px dashed var(--line-dark);
+      border-radius: 10px;
+      background: #f8f4eb;
+    }
+
+    .terminal-card::before {
+      position: absolute;
+      top: 15px;
+      left: -33px;
+      width: 11px;
+      height: 11px;
+      border: 3px solid var(--card);
+      border-radius: 2px;
+      background: var(--navy);
+      content: "";
+      transform: rotate(45deg);
+    }
+
+    .terminal-label {
+      color: var(--ink-soft);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .terminal-value {
+      margin-top: 4px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .timeline-count {
+      margin: 3px 0 0 44px;
+      color: var(--ink-soft);
+      font-size: 10px;
+    }
+
+    .decision-panel {
+      margin-top: 15px;
+    }
+
+    .decision-context {
+      padding: 14px 18px 4px;
+    }
+
+    .decision-context strong {
+      font-family: var(--mono);
+      font-size: 14px;
+    }
+
+    .decision-context p {
+      margin: 5px 0 0;
+      color: var(--ink-soft);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .option-list {
+      display: grid;
+      grid-auto-rows: max-content;
+      align-content: start;
+      gap: 9px;
+      padding: 10px 18px 18px;
+      max-height: min(480px, 65vh);
+      overflow-y: auto;
+      overscroll-behavior-y: contain;
+      scrollbar-gutter: stable;
+    }
+
+    .option-card {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      padding: 13px 14px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--ink);
+      text-align: left;
+      transition: 140ms ease;
+    }
+
+    .option-card::before {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 3px;
+      background: transparent;
+      content: "";
+    }
+
+    .option-card:hover {
+      border-color: var(--line-dark);
+      box-shadow: 0 5px 14px rgba(23, 43, 57, 0.07);
+      transform: translateY(-1px);
+    }
+
+    .option-card.selected {
+      border-color: var(--orange);
+      background: #fffaf7;
+      box-shadow: 0 0 0 2px rgba(217, 96, 46, 0.09);
+    }
+
+    .option-card.selected::before {
+      background: var(--orange);
+    }
+
+    .option-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .option-primaryline {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .option-route {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 780;
+      letter-spacing: 0.015em;
+    }
+
+    .option-carrier {
+      padding: 2px 5px;
+      border-radius: 4px;
+      background: var(--navy);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 780;
+      letter-spacing: 0.06em;
+    }
+
+    .flight-id {
+      margin-top: 5px;
+      overflow-wrap: anywhere;
+      font-family: var(--mono);
+      color: var(--ink-soft);
+      font-size: 9px;
+      line-height: 1.35;
+    }
+
+    .option-time {
+      flex: 0 0 auto;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 650;
+      text-align: right;
+    }
+
+    .option-time span {
+      display: block;
+      margin-top: 3px;
+      color: var(--ink-soft);
+      font-size: 9px;
+      font-weight: 500;
+    }
+
+    .fit-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 11px;
+    }
+
+    .fit-pill {
+      padding: 5px 7px;
+      border-radius: 6px;
+      background: #f2eee6;
+      color: var(--ink-soft);
+      font-size: 9px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .fit-pill.risk {
+      background: var(--orange-soft);
+      color: #85401f;
+    }
+
+    .option-flags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 5px;
+    }
+
+    .decision-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px 18px;
+      border-top: 1px solid var(--line);
+      background: #faf7f0;
+      border-radius: 0 0 var(--radius) var(--radius);
+    }
+
+    .decision-actions-copy {
+      max-width: 490px;
+      color: var(--ink-soft);
+      font-size: 10px;
+      line-height: 1.4;
+    }
+
+    .decision-buttons {
+      display: flex;
+      flex: 0 0 auto;
+      gap: 7px;
+    }
+
+    .secondary-button,
+    .primary-button {
+      min-height: 36px;
+      padding: 8px 11px;
+    }
+
+    .secondary-button {
+      border: 1px solid var(--line-dark);
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .primary-button {
+      border: 1px solid var(--orange);
+      background: var(--orange);
+      color: #fff;
+      box-shadow: 0 5px 12px rgba(217, 96, 46, 0.2);
+    }
+
+    .primary-button:hover:not(:disabled) {
+      border-color: #b9481c;
+      background: #c95327;
+    }
+
+    .comparison-panel {
+      overflow: hidden;
+    }
+
+    .comparison-head-note {
+      color: var(--ink-soft);
+      font-size: 10px;
+      line-height: 1.35;
+      text-align: right;
+    }
+
+    .branch-ledger {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-bottom: 1px solid var(--line);
+    }
+
+    .branch-column {
+      position: relative;
+      min-width: 0;
+      padding: 16px 18px;
+    }
+
+    .branch-column + .branch-column {
+      border-left: 1px solid var(--line);
+      background: #fff9f4;
+    }
+
+    .branch-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--ink-soft);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .branch-label .mini-tag {
+      letter-spacing: 0.02em;
+    }
+
+    .score-line {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .score-value {
+      font-family: var(--mono);
+      font-size: clamp(27px, 3vw, 38px);
+      font-weight: 740;
+      letter-spacing: -0.05em;
+      line-height: 0.9;
+    }
+
+    .score-value small {
+      color: var(--ink-soft);
+      font-size: 10px;
+      font-weight: 650;
+      letter-spacing: 0;
+    }
+
+    .score-delta {
+      color: var(--ink-soft);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .score-delta.positive {
+      color: var(--teal);
+    }
+
+    .score-delta.negative {
+      color: var(--red);
+    }
+
+    .trip-facts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 7px;
+      margin-top: 15px;
+    }
+
+    .trip-fact {
+      min-width: 0;
+      padding: 8px 8px 7px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.56);
+    }
+
+    .trip-fact dt,
+    .trip-fact dd {
+      margin: 0;
+    }
+
+    .trip-fact dt {
+      overflow: hidden;
+      color: var(--ink-soft);
+      font-size: 8px;
+      font-weight: 750;
+      letter-spacing: 0.09em;
+      text-overflow: ellipsis;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .trip-fact dd {
+      margin-top: 4px;
+      overflow-wrap: anywhere;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .rubric-section {
+      padding: 17px 18px 19px;
+    }
+
+    .rubric-titleline {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 13px;
+    }
+
+    .rubric-titleline h3 {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .legend {
+      display: flex;
+      gap: 11px;
+      color: var(--ink-soft);
+      font-size: 9px;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .legend i {
+      width: 11px;
+      height: 3px;
+      border-radius: 2px;
+      background: var(--navy);
+    }
+
+    .legend span:last-child i {
+      background: var(--orange);
+    }
+
+    .rubric-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .rubric-row {
+      display: grid;
+      grid-template-columns: minmax(128px, 0.75fr) minmax(150px, 1.5fr) minmax(126px, 0.7fr);
+      gap: 12px;
+      align-items: center;
+    }
+
+    .rubric-name {
+      min-width: 0;
+    }
+
+    .rubric-name strong {
+      display: block;
+      overflow: hidden;
+      font-size: 10px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .rubric-name span {
+      display: block;
+      margin-top: 2px;
+      color: var(--ink-soft);
+      font-family: var(--mono);
+      font-size: 8px;
+    }
+
+    .bar-stack {
+      display: grid;
+      gap: 4px;
+    }
+
+    .bar-track {
+      position: relative;
+      height: 5px;
+      overflow: hidden;
+      border-radius: 10px;
+      background: #e9e4da;
+    }
+
+    .bar-fill {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--navy);
+      transition: width 300ms ease;
+    }
+
+    .bar-track.current .bar-fill {
+      background: var(--orange);
+    }
+
+    .rubric-values {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 9px;
+      text-align: right;
+    }
+
+    .rubric-values span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .rubric-values span:last-child {
+      color: var(--orange);
+    }
+
+    .repeat-panel {
+      margin-top: 15px;
+      overflow: hidden;
+    }
+
+    .repeat-intro {
+      max-width: 530px;
+      color: var(--ink-soft);
+      font-size: 10px;
+      line-height: 1.4;
+      text-align: right;
+    }
+
+    .repeat-body {
+      padding: 17px 18px 18px;
+    }
+
+    .repeat-placeholder {
+      display: grid;
+      min-height: 122px;
+      place-items: center;
+      padding: 24px;
+      border: 1px dashed var(--line-dark);
+      border-radius: 12px;
+      background: #faf7f0;
+      color: var(--ink-soft);
+      font-size: 11px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .repeat-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 126px minmax(0, 1fr);
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .repeat-flight {
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #fff;
+    }
+
+    .repeat-flight.alternative {
+      border-color: #e3ae96;
+      background: #fff8f3;
+    }
+
+    .repeat-flight h4 {
+      margin: 0;
+      overflow-wrap: anywhere;
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    .repeat-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      margin-top: 11px;
+    }
+
+    .repeat-stat {
+      min-width: 0;
+    }
+
+    .repeat-stat span {
+      display: block;
+      color: var(--ink-soft);
+      font-size: 8px;
+      font-weight: 750;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .repeat-stat strong {
+      display: block;
+      margin-top: 4px;
+      overflow: hidden;
+      font-family: var(--mono);
+      font-size: 11px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .repeat-deltas {
+      display: grid;
+      align-content: center;
+      gap: 8px;
+      padding: 10px;
+      border-radius: 11px;
+      background: var(--navy);
+      color: #fff;
+      text-align: center;
+    }
+
+    .repeat-delta span {
+      display: block;
+      color: rgba(255, 255, 255, 0.57);
+      font-size: 8px;
+      font-weight: 750;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .repeat-delta strong {
+      display: block;
+      margin-top: 3px;
+      font-family: var(--mono);
+      font-size: 13px;
+    }
+
+    .repeat-scope {
+      margin: 11px 0 0;
+      color: var(--ink-soft);
+      font-size: 9px;
+      line-height: 1.45;
+    }
+
+    .page-notes {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(300px, 0.7fr);
+      gap: 15px;
+      margin: 15px 18px 0;
+    }
+
+    .disclosure,
+    .provenance {
+      min-width: 0;
+      padding: 15px 17px;
+      border: 1px solid rgba(23, 43, 57, 0.12);
+      border-radius: 14px;
+      background: rgba(255, 253, 248, 0.82);
+    }
+
+    .disclosure {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .disclosure-mark {
+      display: grid;
+      flex: 0 0 auto;
+      width: 27px;
+      height: 27px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--orange-soft);
+      color: var(--orange);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .disclosure strong {
+      display: block;
+      font-size: 11px;
+    }
+
+    .disclosure p {
+      margin: 4px 0 0;
+      color: var(--ink-soft);
+      font-size: 10px;
+      line-height: 1.45;
+    }
+
+    .provenance summary {
+      color: var(--ink);
+      font-size: 11px;
+      font-weight: 750;
+      list-style-position: outside;
+      cursor: pointer;
+    }
+
+    .provenance-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 11px 16px;
+      margin: 14px 0 0;
+    }
+
+    .provenance-grid div:last-child {
+      grid-column: 1 / -1;
+    }
+
+    .provenance-grid dt,
+    .provenance-grid dd {
+      margin: 0;
+    }
+
+    .provenance-grid dt {
+      color: var(--ink-soft);
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .provenance-grid dd {
+      margin-top: 4px;
+      overflow-wrap: anywhere;
+      color: var(--ink);
+      font-size: 10px;
+      line-height: 1.45;
+    }
+
+    .skeleton {
+      position: relative;
+      overflow: hidden;
+      background: #eae5dc;
+      color: transparent !important;
+      border-radius: 5px;
+    }
+
+    .skeleton::after {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.72), transparent);
+      content: "";
+      animation: shimmer 1.35s infinite;
+      transform: translateX(-100%);
+    }
+
+    @keyframes shimmer {
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    @media (max-width: 1050px) {
+      .route-brief {
+        grid-template-columns: 1fr;
+      }
+
+      .control-deck {
+        grid-template-columns: 1fr 0.72fr;
+      }
+
+      .control-cases {
+        grid-column: 1 / -1;
+      }
+
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline-column {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 15px;
+      }
+
+      .timeline-column > .panel {
+        margin-top: 0;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .shell {
+        width: min(100% - 18px, 1500px);
+        padding-top: 9px;
+      }
+
+      .masthead {
+        border-radius: 17px;
+      }
+
+      .masthead-top {
+        align-items: flex-start;
+        padding: 17px;
+      }
+
+      .brand-subtitle {
+        display: none;
+      }
+
+      .mode-chip {
+        max-width: 142px;
+        white-space: normal;
+      }
+
+      .route-brief {
+        padding: 20px 17px 24px;
+      }
+
+      .route-board {
+        padding: 14px;
+      }
+
+      .route-times {
+        grid-template-columns: 1fr;
+      }
+
+      .control-deck {
+        grid-template-columns: 1fr;
+        margin-inline: 8px;
+      }
+
+      .control-cases {
+        grid-column: auto;
+      }
+
+      .status-region,
+      .workspace,
+      .page-notes {
+        margin-inline: 8px;
+      }
+
+      .timeline-column {
+        grid-template-columns: 1fr;
+      }
+
+      .panel-heading,
+      .decision-actions {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .toolbar {
+        justify-content: flex-start;
+      }
+
+      .decision-actions {
+        display: flex;
+      }
+
+      .decision-buttons {
+        width: 100%;
+      }
+
+      .decision-buttons button {
+        flex: 1;
+      }
+
+      .branch-ledger {
+        grid-template-columns: 1fr;
+      }
+
+      .branch-column + .branch-column {
+        border-top: 1px solid var(--line);
+        border-left: 0;
+      }
+
+      .rubric-row {
+        grid-template-columns: minmax(110px, 0.7fr) minmax(130px, 1fr);
+      }
+
+      .rubric-values {
+        grid-column: 1 / -1;
+        text-align: left;
+      }
+
+      .repeat-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .repeat-deltas {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .page-notes {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        scroll-behavior: auto !important;
+        transition-duration: 0.001ms !important;
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="masthead">
+      <div class="masthead-top">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">✦</div>
+          <div>
+            <p class="eyebrow">Gatebound Decision Lab</p>
+            <p class="brand-subtitle">Counterfactual routing workbench</p>
+          </div>
+        </div>
+        <div class="mode-chip" id="mode-chip">Historical simulator</div>
+      </div>
+
+      <div class="route-brief">
+        <div class="route-copy">
+          <p class="eyebrow">Active trip / exact-world replay</p>
+          <h1>Change one decision. See the difference.</h1>
+          <p class="route-case-name" id="case-title">Loading the decision board…</p>
+          <p class="route-description" id="case-description">
+            Retrieving curated trips, policies, and scoring criteria.
+          </p>
+        </div>
+
+        <section class="route-board" aria-label="Active route and timing">
+          <div class="route-airports">
+            <div class="airport-block">
+              <span class="airport-code" id="route-origin">–––</span>
+              <span class="airport-caption">Origin</span>
+            </div>
+            <div class="route-arc" aria-hidden="true">
+              <span class="plane">➤</span>
+            </div>
+            <div class="airport-block">
+              <span class="airport-code" id="route-destination">–––</span>
+              <span class="airport-caption">Destination</span>
+            </div>
+          </div>
+          <dl class="route-times">
+            <div>
+              <dt>Ready</dt>
+              <dd id="ready-time">—</dd>
+            </div>
+            <div>
+              <dt>Deadline</dt>
+              <dd id="deadline-time">—</dd>
+            </div>
+            <div>
+              <dt>Horizon</dt>
+              <dd id="horizon-time">—</dd>
+            </div>
+          </dl>
+        </section>
+      </div>
+    </header>
+
+    <section class="control-deck" aria-label="Scenario controls">
+      <div class="control-cases">
+        <span class="control-label" id="case-control-label">Curated trips</span>
+        <div class="case-pills" id="case-pills" role="group" aria-labelledby="case-control-label"></div>
+      </div>
+      <div>
+        <label class="control-label" for="scenario-seed">Scenario seed</label>
+        <div class="seed-control">
+          <input class="field" id="scenario-seed" type="number" step="1" inputmode="numeric" aria-describedby="seed-note">
+          <button class="icon-button" id="next-scenario" type="button" title="Next scenario" aria-label="Load next scenario">→</button>
+        </div>
+        <span id="seed-note" hidden>Integer simulator world identifier</span>
+      </div>
+      <div>
+        <label class="control-label" for="policy-select">Continuation policy</label>
+        <select class="select-field" id="policy-select"></select>
+      </div>
+    </section>
+
+    <div class="status-region" aria-live="polite">
+      <div class="status-banner" id="status-banner">
+        <span id="status-message"></span>
+        <button id="status-action" type="button">Retry</button>
+      </div>
+    </div>
+
+    <div class="workspace">
+      <div class="timeline-column">
+        <section class="panel" aria-labelledby="timeline-heading">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">Journey tape</p>
+              <h2 id="timeline-heading">Decision timeline</h2>
+            </div>
+            <div class="toolbar" aria-label="Timeline controls">
+              <button class="tool-button" id="step-back" type="button">Back</button>
+              <button class="tool-button" id="step-forward" type="button">Step</button>
+              <button class="tool-button" id="reveal-all" type="button">Reveal all</button>
+              <button class="tool-button" id="replay-path" type="button">Replay</button>
+            </div>
+          </div>
+          <div class="timeline-wrap">
+            <ol class="timeline" id="timeline"></ol>
+            <p class="timeline-count" id="timeline-count"></p>
+          </div>
+        </section>
+
+        <section class="panel decision-panel" aria-labelledby="decision-heading">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">Legal action set</p>
+              <h2 id="decision-heading">Choose a flight</h2>
+            </div>
+            <span class="mini-tag" id="decision-number">Decision —</span>
+          </div>
+          <div class="decision-context">
+            <strong id="decision-airport">Select a revealed decision</strong>
+            <p id="decision-copy">The available flights and fitted historical risks will appear here.</p>
+          </div>
+          <div class="option-list" id="option-list"></div>
+          <div class="decision-actions">
+            <div class="decision-actions-copy" id="choice-help">
+              Pick a legal alternative, then replay from this decision with the preceding choices held fixed.
+            </div>
+            <div class="decision-buttons">
+              <button class="secondary-button" id="reset-branch" type="button">Reset branch</button>
+              <button class="primary-button" id="choose-flight" type="button">Choose &amp; replay</button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div>
+        <section class="panel comparison-panel" aria-labelledby="comparison-heading">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">One frozen world</p>
+              <h2 id="comparison-heading">Baseline vs current branch</h2>
+            </div>
+            <div class="comparison-head-note" id="comparison-note">
+              Same flight-keyed world; shared flights keep their outcomes
+            </div>
+          </div>
+
+          <div class="branch-ledger">
+            <article class="branch-column">
+              <div class="branch-label">
+                <span>Original baseline</span>
+                <span class="mini-tag">Policy path</span>
+              </div>
+              <div class="score-line">
+                <div class="score-value" id="baseline-score">— <small>/ 1</small></div>
+                <div class="score-delta" id="baseline-score-note">Deadline-first score</div>
+              </div>
+              <dl class="trip-facts" id="baseline-facts"></dl>
+            </article>
+
+            <article class="branch-column">
+              <div class="branch-label">
+                <span>Current branch</span>
+                <span class="mini-tag changed" id="branch-state">Unchanged</span>
+              </div>
+              <div class="score-line">
+                <div class="score-value" id="branch-score">— <small>/ 1</small></div>
+                <div class="score-delta" id="branch-score-delta">No branch delta</div>
+              </div>
+              <dl class="trip-facts" id="branch-facts"></dl>
+            </article>
+          </div>
+
+          <div class="rubric-section">
+            <div class="rubric-titleline">
+              <h3>Deadline-first objective</h3>
+              <div class="legend" aria-label="Bar legend">
+                <span><i></i>Baseline</span>
+                <span><i></i>Branch</span>
+              </div>
+            </div>
+            <div class="rubric-list" id="rubric-list"></div>
+          </div>
+        </section>
+
+        <section class="panel repeat-panel" aria-labelledby="repeat-heading">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">Starting flight only</p>
+              <h2 id="repeat-heading">32 matched simulator worlds</h2>
+            </div>
+            <div class="repeat-intro">
+              Conditional simulator comparison; later choices follow the same frozen policy.
+            </div>
+          </div>
+          <div class="repeat-body" id="repeat-body"></div>
+        </section>
+      </div>
+    </div>
+
+    <footer class="page-notes">
+      <aside class="disclosure">
+        <span class="disclosure-mark" aria-hidden="true">i</span>
+        <div>
+          <strong>Historical simulation, not a booking tool.</strong>
+          <p>
+            Results replay fitted historical flight behavior. They do not show live schedules,
+            seat inventory, fares, operational advice, or a guarantee about a future trip.
+            These selected cases illustrate decisions; they are not an aggregate policy evaluation.
+          </p>
+        </div>
+      </aside>
+
+      <details class="provenance">
+        <summary>Data and method provenance</summary>
+        <dl class="provenance-grid">
+          <div>
+            <dt>Fit window</dt>
+            <dd id="fit-window">—</dd>
+          </div>
+          <div>
+            <dt>Outcome window</dt>
+            <dd id="outcome-window">—</dd>
+          </div>
+          <div>
+            <dt>Candidate support</dt>
+            <dd>
+              Support is the fitted outcome-pool sample count. Sparse groups may use the
+              simulator model’s documented fallback.
+            </dd>
+          </div>
+          <div>
+            <dt>Planner estimate</dt>
+            <dd>
+              A fitted-history routing approximation used to rank legal options. It is not a
+              live prediction or a stated confidence about this trip.
+            </dd>
+          </div>
+          <div>
+            <dt>Scope</dt>
+            <dd id="provenance-scope">—</dd>
+          </div>
+        </dl>
+      </details>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var state = {
+        catalog: null,
+        baseline: null,
+        branch: null,
+        activeConfig: null,
+        requestedConfig: null,
+        selectedStep: 0,
+        selectedCandidateId: null,
+        visibleSteps: 1,
+        compare: null,
+        busy: {
+          catalog: false,
+          replay: false,
+          branch: false,
+          compare: false
+        },
+        error: null,
+        requestVersion: {
+          catalog: 0,
+          replay: 0,
+          branch: 0,
+          compare: 0
+        },
+        controllers: {
+          catalog: null,
+          replay: null,
+          branch: null,
+          compare: null
+        },
+        replayTimer: null
+      };
+
+      var elements = {};
+      var formatter = new Intl.DateTimeFormat("en-US", {
+        timeZone: "UTC",
+        weekday: "short",
+        month: "short",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false
+      });
+
+      function byId(id) {
+        return document.getElementById(id);
+      }
+
+      function cacheElements() {
+        [
+          "mode-chip", "case-title", "case-description", "route-origin", "route-destination",
+          "ready-time", "deadline-time", "horizon-time", "case-pills", "scenario-seed",
+          "next-scenario", "policy-select", "status-banner", "status-message", "status-action",
+          "step-back", "step-forward", "reveal-all", "replay-path", "timeline",
+          "timeline-count", "decision-number", "decision-airport", "decision-copy",
+          "option-list", "choice-help", "reset-branch", "choose-flight", "comparison-note",
+          "baseline-score", "baseline-score-note", "baseline-facts", "branch-score",
+          "branch-score-delta", "branch-state", "branch-facts", "rubric-list", "repeat-body",
+          "fit-window", "outcome-window", "provenance-scope"
+        ].forEach(function (id) {
+          elements[id] = byId(id);
+        });
+      }
+
+      function isFiniteNumber(value) {
+        return typeof value === "number" && Number.isFinite(value);
+      }
+
+      function clamp(value, low, high) {
+        return Math.min(high, Math.max(low, value));
+      }
+
+      function safeArray(value) {
+        return Array.isArray(value) ? value : [];
+      }
+
+      function safeText(value, fallback) {
+        if (typeof value === "string" && value.trim()) {
+          return value;
+        }
+        return fallback || "—";
+      }
+
+      function humanize(value) {
+        var text = safeText(value, "Unknown").replace(/[_-]+/g, " ");
+        return text.charAt(0).toUpperCase() + text.slice(1);
+      }
+
+      function formatTime(epochMinutes) {
+        if (!isFiniteNumber(epochMinutes)) {
+          return "Not available";
+        }
+        var date = new Date(epochMinutes * 60000);
+        if (!Number.isFinite(date.getTime())) {
+          return "Not available";
+        }
+        return formatter.format(date).replace(",", "") + " UTC";
+      }
+
+      function formatClock(epochMinutes) {
+        if (!isFiniteNumber(epochMinutes)) {
+          return "—";
+        }
+        var date = new Date(epochMinutes * 60000);
+        if (!Number.isFinite(date.getTime())) {
+          return "—";
+        }
+        var hours = String(date.getUTCHours()).padStart(2, "0");
+        var minutes = String(date.getUTCMinutes()).padStart(2, "0");
+        return hours + ":" + minutes + " UTC";
+      }
+
+      function formatDuration(minutes) {
+        if (!isFiniteNumber(minutes)) {
+          return "Not available";
+        }
+        var sign = minutes < 0 ? "−" : "";
+        var absolute = Math.abs(Math.round(minutes));
+        var hours = Math.floor(absolute / 60);
+        var remainder = absolute % 60;
+        if (hours === 0) {
+          return sign + remainder + " min";
+        }
+        return sign + hours + "h " + String(remainder).padStart(2, "0") + "m";
+      }
+
+      function formatScore(value) {
+        return isFiniteNumber(value) ? value.toFixed(3) : "—";
+      }
+
+      function formatPercent(value, digits) {
+        if (!isFiniteNumber(value)) {
+          return "Not available";
+        }
+        return (value * 100).toFixed(typeof digits === "number" ? digits : 1) + "%";
+      }
+
+      function formatSigned(value, suffix, digits) {
+        if (!isFiniteNumber(value)) {
+          return "—";
+        }
+        var precision = typeof digits === "number" ? digits : 3;
+        var sign = value > 0 ? "+" : value < 0 ? "−" : "±";
+        return sign + Math.abs(value).toFixed(precision) + (suffix || "");
+      }
+
+      function makeElement(tag, className, textValue) {
+        var node = document.createElement(tag);
+        if (className) {
+          node.className = className;
+        }
+        if (textValue !== undefined && textValue !== null) {
+          node.textContent = String(textValue);
+        }
+        return node;
+      }
+
+      function replaceText(id, value, fallback) {
+        elements[id].textContent = safeText(value, fallback);
+      }
+
+      function clearReplayTimer() {
+        if (state.replayTimer !== null) {
+          window.clearInterval(state.replayTimer);
+          state.replayTimer = null;
+        }
+      }
+
+      function abortRequest(name) {
+        if (state.controllers[name]) {
+          state.controllers[name].abort();
+          state.controllers[name] = null;
+        }
+        state.requestVersion[name] += 1;
+      }
+
+      function beginRequest(name) {
+        abortRequest(name);
+        var controller = new AbortController();
+        state.controllers[name] = controller;
+        state.requestVersion[name] += 1;
+        return {
+          controller: controller,
+          version: state.requestVersion[name]
+        };
+      }
+
+      function requestIsCurrent(name, version) {
+        return state.requestVersion[name] === version;
+      }
+
+      function configKey(config) {
+        if (!config) {
+          return "";
+        }
+        return [config.caseId, config.scenarioSeed, config.policyId].join("|");
+      }
+
+      async function fetchJson(url, options, signal) {
+        var requestOptions = Object.assign({}, options || {});
+        requestOptions.signal = signal;
+        requestOptions.headers = Object.assign({
+          "Accept": "application/json"
+        }, requestOptions.headers || {});
+        var response = await fetch(url, requestOptions);
+        var payload;
+        try {
+          payload = await response.json();
+        } catch (error) {
+          throw new Error("The lab returned a response that was not valid JSON.");
+        }
+        if (!response.ok) {
+          var apiMessage = payload && typeof payload.error === "string"
+            ? payload.error
+            : "Request failed with HTTP " + response.status + ".";
+          throw new Error(apiMessage);
+        }
+        return payload;
+      }
+
+      function setBusy(name, value) {
+        state.busy[name] = value;
+        renderStatus();
+        renderControlState();
+      }
+
+      function setError(message, retryKind) {
+        state.error = {
+          message: message,
+          retryKind: retryKind
+        };
+        renderStatus();
+      }
+
+      function clearError() {
+        state.error = null;
+        renderStatus();
+      }
+
+      function renderStatus() {
+        var banner = elements["status-banner"];
+        var message = elements["status-message"];
+        var action = elements["status-action"];
+        banner.className = "status-banner";
+        action.hidden = true;
+
+        if (state.error) {
+          banner.classList.add("visible", "error");
+          message.textContent = state.error.message;
+          action.hidden = false;
+          action.textContent = "Retry";
+          return;
+        }
+
+        if (state.busy.catalog) {
+          banner.classList.add("visible", "loading");
+          message.textContent = "Loading curated cases and data provenance…";
+          return;
+        }
+        if (state.busy.replay) {
+          banner.classList.add("visible", "loading");
+          message.textContent = state.baseline
+            ? "Loading a new frozen world. The previous result remains visible."
+            : "Reconstructing the baseline route…";
+          return;
+        }
+        if (state.busy.branch) {
+          banner.classList.add("visible", "loading");
+          message.textContent = "Replaying the selected branch in the same frozen world…";
+          return;
+        }
+        if (state.busy.compare) {
+          banner.classList.add("visible", "loading");
+          message.textContent = "Running 32 matched simulator worlds for the two starting flights…";
+          return;
+        }
+      }
+
+      function renderControlState() {
+        var locked = state.busy.catalog || state.busy.replay;
+        elements["scenario-seed"].disabled = locked || !state.catalog;
+        elements["next-scenario"].disabled = locked || !state.catalog;
+        elements["policy-select"].disabled = locked || !state.catalog;
+        elements["case-pills"].querySelectorAll("button").forEach(function (button) {
+          button.disabled = locked;
+        });
+
+        var steps = state.branch ? safeArray(state.branch.steps) : [];
+        elements["step-back"].disabled = !steps.length || state.visibleSteps <= 1;
+        elements["step-forward"].disabled = !steps.length || state.visibleSteps >= steps.length;
+        elements["reveal-all"].disabled = !steps.length || state.visibleSteps >= steps.length;
+        elements["replay-path"].disabled = !steps.length;
+        elements["reset-branch"].disabled =
+          !state.baseline || !state.branch || !branchHasChanged() || state.busy.branch;
+
+        var selected = getSelectedCandidate();
+        var selectedStep = getSelectedStep();
+        var alreadyChosen = selectedStep && selected
+          ? selectedStep.selected_flight_id === selected.flight_id
+          : true;
+        elements["choose-flight"].disabled =
+          !selectedStep || !selected || alreadyChosen || state.busy.branch || state.busy.replay;
+      }
+
+      function getCatalogCase(caseId) {
+        var cases = state.catalog ? safeArray(state.catalog.cases) : [];
+        for (var i = 0; i < cases.length; i += 1) {
+          if (cases[i] && cases[i].id === caseId) {
+            return cases[i];
+          }
+        }
+        return null;
+      }
+
+      function getSelectedStep() {
+        var steps = state.branch ? safeArray(state.branch.steps) : [];
+        return steps[state.selectedStep] || null;
+      }
+
+      function getSelectedCandidate() {
+        var step = getSelectedStep();
+        if (!step) {
+          return null;
+        }
+        var candidates = safeArray(step.candidates);
+        for (var i = 0; i < candidates.length; i += 1) {
+          if (candidates[i] && candidates[i].flight_id === state.selectedCandidateId) {
+            return candidates[i];
+          }
+        }
+        return null;
+      }
+
+      function candidateByFlightId(step, flightId) {
+        var candidates = step ? safeArray(step.candidates) : [];
+        for (var i = 0; i < candidates.length; i += 1) {
+          if (candidates[i] && candidates[i].flight_id === flightId) {
+            return candidates[i];
+          }
+        }
+        return null;
+      }
+
+      function sortedCandidates(step) {
+        var candidates = safeArray(step && step.candidates).slice();
+        var destination = state.branch && state.branch.request
+          ? state.branch.request.destination
+          : null;
+
+        function rank(candidate) {
+          if (candidate && candidate.flight_id === step.selected_flight_id) {
+            return 0;
+          }
+          if (candidate && candidate.flight_id === step.recommended_flight_id) {
+            return 1;
+          }
+          if (candidate && destination && candidate.destination === destination) {
+            return 2;
+          }
+          return 3;
+        }
+
+        candidates.sort(function (left, right) {
+          var rankDelta = rank(left) - rank(right);
+          if (rankDelta !== 0) {
+            return rankDelta;
+          }
+          var leftEstimate = left && left.deadline_probability;
+          var rightEstimate = right && right.deadline_probability;
+          var leftHasEstimate = isFiniteNumber(leftEstimate);
+          var rightHasEstimate = isFiniteNumber(rightEstimate);
+          if (leftHasEstimate && rightHasEstimate && leftEstimate !== rightEstimate) {
+            return rightEstimate - leftEstimate;
+          }
+          if (leftHasEstimate !== rightHasEstimate) {
+            return leftHasEstimate ? -1 : 1;
+          }
+          var leftArrival = left && left.arrival_utc;
+          var rightArrival = right && right.arrival_utc;
+          if (isFiniteNumber(leftArrival) && isFiniteNumber(rightArrival) &&
+              leftArrival !== rightArrival) {
+            return leftArrival - rightArrival;
+          }
+          if (isFiniteNumber(leftArrival) !== isFiniteNumber(rightArrival)) {
+            return isFiniteNumber(leftArrival) ? -1 : 1;
+          }
+          return safeText(left && left.flight_id, "").localeCompare(
+            safeText(right && right.flight_id, "")
+          );
+        });
+        return candidates;
+      }
+
+      function branchHasChanged() {
+        if (!state.baseline || !state.branch) {
+          return false;
+        }
+        var baselineChoices = safeArray(state.baseline.choices);
+        var branchChoices = safeArray(state.branch.choices);
+        var length = Math.max(baselineChoices.length, branchChoices.length);
+        for (var i = 0; i < length; i += 1) {
+          if (baselineChoices[i] !== branchChoices[i]) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      function renderCatalogControls() {
+        elements["case-pills"].replaceChildren();
+        elements["policy-select"].replaceChildren();
+        if (!state.catalog) {
+          return;
+        }
+
+        var cases = safeArray(state.catalog.cases);
+        cases.forEach(function (item) {
+          if (!item || typeof item.id !== "string") {
+            return;
+          }
+          var button = makeElement("button", "case-pill", safeText(item.label, item.id));
+          button.type = "button";
+          button.setAttribute("aria-pressed", String(
+            state.activeConfig ? state.activeConfig.caseId === item.id : false
+          ));
+          button.addEventListener("click", function () {
+            if (!state.activeConfig || state.activeConfig.caseId !== item.id) {
+              requestScenario({
+                caseId: item.id,
+                scenarioSeed: isFiniteNumber(item.scenario_seed)
+                  ? item.scenario_seed
+                  : state.activeConfig.scenarioSeed,
+                policyId: safeText(item.policy_id,
+                  state.activeConfig ? state.activeConfig.policyId : "deadline_planner")
+              });
+            }
+          });
+          elements["case-pills"].appendChild(button);
+        });
+
+        safeArray(state.catalog.policies).forEach(function (policy) {
+          if (!policy || typeof policy.id !== "string") {
+            return;
+          }
+          var option = makeElement("option", "", safeText(policy.label, humanize(policy.id)));
+          option.value = policy.id;
+          elements["policy-select"].appendChild(option);
+        });
+
+        if (state.activeConfig) {
+          elements["policy-select"].value = state.activeConfig.policyId;
+          elements["scenario-seed"].value = String(state.activeConfig.scenarioSeed);
+        }
+      }
+
+      function renderRouteBrief() {
+        var replay = state.branch || state.baseline;
+        var request = replay && replay.request ? replay.request : null;
+        var catalogCase = state.activeConfig ? getCatalogCase(state.activeConfig.caseId) : null;
+
+        replaceText("case-title",
+          catalogCase ? catalogCase.label : state.catalog && state.catalog.title,
+          "Gatebound Decision Lab"
+        );
+        replaceText("case-description",
+          catalogCase ? catalogCase.description : null,
+          "Choose a trip and simulator world to examine legal routing decisions."
+        );
+        replaceText("route-origin",
+          request ? request.origin : catalogCase && catalogCase.origin,
+          "–––"
+        );
+        replaceText("route-destination",
+          request ? request.destination : catalogCase && catalogCase.destination,
+          "–––"
+        );
+
+        var ready = request ? request.ready_utc : catalogCase && catalogCase.ready_utc;
+        var deadline = request ? request.deadline_utc : catalogCase && catalogCase.deadline_utc;
+        var horizon = request ? request.horizon_utc : catalogCase && catalogCase.horizon_utc;
+        elements["ready-time"].textContent = formatTime(ready);
+        elements["deadline-time"].textContent = formatTime(deadline);
+        elements["horizon-time"].textContent = formatTime(horizon);
+        elements["mode-chip"].textContent = state.catalog
+          ? humanize(safeText(state.catalog.mode, "Historical simulator"))
+          : "Historical simulator";
+      }
+
+      function statusClass(status) {
+        if (status === "completed" || status === "arrived") {
+          return "good";
+        }
+        if (status === "cancelled" || status === "invalid_outcome" || status === "missed_departure") {
+          return "bad";
+        }
+        return "warn";
+      }
+
+      function outcomeExplanation(step) {
+        var outcome = step && step.outcome ? step.outcome : {};
+        var airport = safeText(outcome.resolved_airport, safeText(step && step.airport, "the current airport"));
+        var time = formatTime(outcome.arrival_utc);
+        if (outcome.status === "completed" || outcome.status === "arrived") {
+          return outcome.diverted === true
+            ? "This sampled flight diverted and resolved at " + airport + " at " + time + "."
+            : "This sampled flight completed at " + airport + " at " + time + ".";
+        }
+        if (outcome.status === "diverted") {
+          return "This sampled flight diverted to " + airport + " at " + time +
+            "; the route continues from there.";
+        }
+        if (outcome.status === "cancelled") {
+          return "This sampled flight was cancelled; the path cannot advance beyond " + airport + ".";
+        }
+        if (outcome.status === "unresolved_diversion") {
+          return "This sampled flight diverted without a resolvable onward airport, so routing stops.";
+        }
+        if (outcome.status === "missed_departure") {
+          return "The selected flight had already departed by this decision clock.";
+        }
+        if (outcome.status === "invalid_outcome") {
+          return "The sampled historical outcome could not support a valid next routing state.";
+        }
+        return "Simulator result: " + humanize(outcome.status) + ".";
+      }
+
+      function renderTimeline() {
+        elements.timeline.replaceChildren();
+        var steps = state.branch ? safeArray(state.branch.steps) : [];
+        if (!steps.length) {
+          var empty = makeElement(
+            "li",
+            "timeline-empty",
+            state.busy.replay ? "Reconstructing the route…" : "No decisions are available."
+          );
+          elements.timeline.appendChild(empty);
+          elements["timeline-count"].textContent = "";
+          renderControlState();
+          return;
+        }
+
+        state.visibleSteps = clamp(state.visibleSteps, 1, steps.length);
+        state.selectedStep = clamp(state.selectedStep, 0, state.visibleSteps - 1);
+        var baselineSteps = state.baseline ? safeArray(state.baseline.steps) : [];
+
+        steps.slice(0, state.visibleSteps).forEach(function (step, index) {
+          var item = makeElement("li", "timeline-step");
+          if (index === state.selectedStep) {
+            item.classList.add("selected");
+          }
+          var node = makeElement("span", "step-node");
+          node.setAttribute("aria-hidden", "true");
+
+          var button = makeElement("button", "step-card");
+          button.type = "button";
+          button.setAttribute("aria-current", index === state.selectedStep ? "step" : "false");
+          button.addEventListener("click", function () {
+            clearReplayTimer();
+            state.selectedStep = index;
+            var activeStep = safeArray(state.branch.steps)[index];
+            state.selectedCandidateId = activeStep ? activeStep.selected_flight_id : null;
+            state.compare = null;
+            abortRequest("compare");
+            renderWorkspace();
+          });
+
+          var top = makeElement("div", "step-topline");
+          top.appendChild(makeElement("span", "step-index", "Decision " + String(index + 1)));
+          top.appendChild(makeElement("span", "step-clock", formatTime(step && step.clock_utc)));
+
+          var flightLine = makeElement("div", "step-flightline");
+          var selectedCandidate = candidateByFlightId(step, step && step.selected_flight_id);
+          var routeText = safeText(step && step.airport, "—") + " → " +
+            safeText(selectedCandidate && selectedCandidate.destination,
+              step && step.outcome && step.outcome.resolved_airport
+            );
+          flightLine.appendChild(makeElement("span", "step-route", routeText));
+          flightLine.appendChild(makeElement(
+            "span",
+            "step-flight",
+            safeText(step && step.selected_flight_id, "No flight selected")
+          ));
+
+          var foot = makeElement("div", "step-foot");
+          var outcomeStatus = step && step.outcome ? step.outcome.status : null;
+          foot.appendChild(makeElement(
+            "span",
+            "status-tag " + statusClass(outcomeStatus),
+            humanize(outcomeStatus)
+          ));
+          foot.appendChild(makeElement(
+            "span",
+            "mini-tag",
+            String(safeArray(step && step.candidates).length) + " legal"
+          ));
+          if (step && step.selected_flight_id === step.recommended_flight_id) {
+            foot.appendChild(makeElement("span", "mini-tag recommended", "Policy pick"));
+          }
+          var baselineStep = baselineSteps[index];
+          if (baselineStep && baselineStep.selected_flight_id !== step.selected_flight_id) {
+            foot.appendChild(makeElement("span", "mini-tag changed", "Branched"));
+          }
+
+          button.appendChild(top);
+          button.appendChild(flightLine);
+          button.appendChild(foot);
+          button.appendChild(makeElement("p", "step-outcome", outcomeExplanation(step)));
+          item.appendChild(node);
+          item.appendChild(button);
+          elements.timeline.appendChild(item);
+        });
+
+        if (state.visibleSteps === steps.length && state.branch.summary) {
+          var terminal = makeElement("li", "terminal-card");
+          terminal.appendChild(makeElement("div", "terminal-label", "Replay terminates"));
+          terminal.appendChild(makeElement(
+            "div",
+            "terminal-value",
+            safeText(state.branch.summary.final_airport, "—") + " · " +
+              humanize(state.branch.summary.termination_reason) + " · " +
+              formatTime(state.branch.summary.clock_utc)
+          ));
+          elements.timeline.appendChild(terminal);
+        }
+
+        elements["timeline-count"].textContent =
+          "Showing " + String(state.visibleSteps) + " of " + String(steps.length) +
+          (steps.length === 1 ? " decision" : " decisions") + ".";
+        renderControlState();
+      }
+
+      function addFitPill(container, label, value, risk) {
+        var pill = makeElement("span", "fit-pill" + (risk ? " risk" : ""), label + " " + value);
+        container.appendChild(pill);
+      }
+
+      function renderDecisionOptions() {
+        elements["option-list"].replaceChildren();
+        var step = getSelectedStep();
+        if (!step) {
+          elements["decision-number"].textContent = "Decision —";
+          elements["decision-airport"].textContent = "Select a revealed decision";
+          elements["decision-copy"].textContent =
+            "The available flights and fitted historical risks will appear here.";
+          var noOptions = makeElement("div", "repeat-placeholder", "No legal action set is available.");
+          elements["option-list"].appendChild(noOptions);
+          renderControlState();
+          return;
+        }
+
+        elements["decision-number"].textContent = "Decision " + String(state.selectedStep + 1);
+        elements["decision-airport"].textContent =
+          safeText(step.airport, "Unknown airport") + " · " + formatTime(step.clock_utc);
+        elements["decision-copy"].textContent =
+          String(safeArray(step.candidates).length) +
+          " legal flights at this state. " + outcomeExplanation(step) +
+          " Risk fields and planner estimates are fitted-history approximations.";
+
+        var candidates = sortedCandidates(step);
+        if (!candidates.length) {
+          elements["option-list"].appendChild(makeElement(
+            "div",
+            "repeat-placeholder",
+            "This decision has no legal flight options."
+          ));
+        }
+
+        candidates.forEach(function (candidate) {
+          if (!candidate || typeof candidate.flight_id !== "string") {
+            return;
+          }
+          var button = makeElement("button", "option-card");
+          button.type = "button";
+          var selected = candidate.flight_id === state.selectedCandidateId;
+          if (selected) {
+            button.classList.add("selected");
+          }
+          button.setAttribute("aria-pressed", String(selected));
+          button.addEventListener("click", function () {
+            clearReplayTimer();
+            state.selectedCandidateId = candidate.flight_id;
+            state.compare = null;
+            abortRequest("compare");
+            renderDecisionOptions();
+            renderRepeatComparison();
+          });
+
+          var head = makeElement("div", "option-head");
+          var identity = makeElement("div");
+          var primaryLine = makeElement("div", "option-primaryline");
+          primaryLine.appendChild(makeElement(
+            "span",
+            "option-route",
+            safeText(candidate.origin, "—") + " → " + safeText(candidate.destination, "—")
+          ));
+          primaryLine.appendChild(makeElement(
+            "span",
+            "option-carrier",
+            safeText(candidate.carrier, "Carrier unavailable")
+          ));
+          identity.appendChild(primaryLine);
+          identity.appendChild(makeElement(
+            "div",
+            "flight-id",
+            "BTS identifier · " + candidate.flight_id
+          ));
+          var time = makeElement("div", "option-time", formatClock(candidate.departure_utc));
+          time.appendChild(makeElement("span", "", "arr " + formatClock(candidate.arrival_utc)));
+          head.appendChild(identity);
+          head.appendChild(time);
+
+          var flags = makeElement("div", "option-flags");
+          if (candidate.flight_id === step.selected_flight_id) {
+            flags.appendChild(makeElement("span", "mini-tag changed", "Current choice"));
+          }
+          if (candidate.flight_id === step.recommended_flight_id) {
+            flags.appendChild(makeElement("span", "mini-tag recommended", "Policy pick"));
+          }
+          if (flags.childNodes.length) {
+            identity.appendChild(flags);
+          }
+
+          var fits = makeElement("div", "fit-row");
+          addFitPill(fits, "Cancel", formatPercent(candidate.p_cancelled), true);
+          addFitPill(fits, "Divert", formatPercent(candidate.p_diverted), true);
+          addFitPill(
+            fits,
+            "Mean delay",
+            isFiniteNumber(candidate.mean_delay_min)
+              ? Math.round(candidate.mean_delay_min) + " min"
+              : "Not available",
+            false
+          );
+          addFitPill(
+            fits,
+            "Fit support",
+            isFiniteNumber(candidate.support) ? String(candidate.support) : "Not available",
+            false
+          );
+          addFitPill(
+            fits,
+            "Planner estimate",
+            candidate.deadline_probability === null
+              ? "Not available"
+              : formatPercent(candidate.deadline_probability),
+            false
+          );
+
+          button.appendChild(head);
+          button.appendChild(fits);
+          elements["option-list"].appendChild(button);
+        });
+
+        if (state.selectedStep === 0) {
+          elements["choice-help"].textContent =
+            "Choose a different first flight to replay this world. You can also run the bounded 32-world comparison below.";
+        } else {
+          elements["choice-help"].textContent =
+            "This rewind preserves every earlier choice and reuses the identical flight-keyed simulator world.";
+        }
+        renderControlState();
+      }
+
+      function appendFact(container, label, value) {
+        var item = makeElement("div", "trip-fact");
+        item.appendChild(makeElement("dt", "", label));
+        item.appendChild(makeElement("dd", "", value));
+        container.appendChild(item);
+      }
+
+      function renderSummaryFacts(container, replay) {
+        container.replaceChildren();
+        var summary = replay && replay.summary ? replay.summary : {};
+        appendFact(
+          container,
+          "Deadline",
+          summary.on_time_arrival === true
+            ? "Met"
+            : summary.on_time_arrival === false ? "Missed" : "Not available"
+        );
+        appendFact(
+          container,
+          "Eventual arrival",
+          summary.arrived === true
+            ? "Reached"
+            : summary.arrived === false ? "Not reached" : "Not available"
+        );
+        appendFact(container, "Elapsed", formatDuration(summary.elapsed_min));
+        appendFact(container, "Final airport", safeText(summary.final_airport, "—"));
+        appendFact(container, "Termination", humanize(summary.termination_reason));
+        appendFact(
+          container,
+          "Validity",
+          summary.validity === true ? "Valid" : summary.validity === false ? "Invalid" : "Unknown"
+        );
+      }
+
+      function rubricMap(replay) {
+        var result = new Map();
+        safeArray(replay && replay.rubric).forEach(function (row) {
+          if (row && typeof row.name === "string") {
+            result.set(row.name, row);
+          }
+        });
+        return result;
+      }
+
+      function rubricOrder() {
+        var order = [];
+        safeArray(state.catalog && state.catalog.rubric).forEach(function (row) {
+          if (row && typeof row.name === "string" && order.indexOf(row.name) < 0) {
+            order.push(row.name);
+          }
+        });
+        safeArray(state.baseline && state.baseline.rubric).forEach(function (row) {
+          if (row && typeof row.name === "string" && order.indexOf(row.name) < 0) {
+            order.push(row.name);
+          }
+        });
+        safeArray(state.branch && state.branch.rubric).forEach(function (row) {
+          if (row && typeof row.name === "string" && order.indexOf(row.name) < 0) {
+            order.push(row.name);
+          }
+        });
+        return order;
+      }
+
+      function renderRubric() {
+        elements["rubric-list"].replaceChildren();
+        var baseline = rubricMap(state.baseline);
+        var branch = rubricMap(state.branch);
+        var catalogRubric = new Map();
+        safeArray(state.catalog && state.catalog.rubric).forEach(function (row) {
+          if (row && typeof row.name === "string") {
+            catalogRubric.set(row.name, row);
+          }
+        });
+        var order = rubricOrder();
+
+        if (!order.length) {
+          elements["rubric-list"].appendChild(makeElement(
+            "div",
+            "repeat-placeholder",
+            "Criterion scores will appear after the replay loads."
+          ));
+          return;
+        }
+
+        order.forEach(function (name) {
+          var base = baseline.get(name);
+          var current = branch.get(name);
+          var meta = catalogRubric.get(name);
+          var label = safeText(
+            current && current.label,
+            safeText(base && base.label, safeText(meta && meta.label, humanize(name)))
+          );
+          var weight = current && isFiniteNumber(current.weight)
+            ? current.weight
+            : base && isFiniteNumber(base.weight)
+              ? base.weight
+              : meta && isFiniteNumber(meta.weight) ? meta.weight : null;
+          var baseValue = base && isFiniteNumber(base.raw_score) ? base.raw_score : null;
+          var currentValue = current && isFiniteNumber(current.raw_score) ? current.raw_score : null;
+
+          var row = makeElement("div", "rubric-row");
+          var nameBlock = makeElement("div", "rubric-name");
+          nameBlock.appendChild(makeElement("strong", "", label));
+          nameBlock.appendChild(makeElement(
+            "span",
+            "",
+            isFiniteNumber(weight) ? "weight " + weight.toFixed(2) : "weight —"
+          ));
+
+          var bars = makeElement("div", "bar-stack");
+          var baseTrack = makeElement("div", "bar-track");
+          var baseFill = makeElement("div", "bar-fill");
+          baseFill.style.width = isFiniteNumber(baseValue)
+            ? String(clamp(baseValue, 0, 1) * 100) + "%"
+            : "0%";
+          baseTrack.appendChild(baseFill);
+          var currentTrack = makeElement("div", "bar-track current");
+          var currentFill = makeElement("div", "bar-fill");
+          currentFill.style.width = isFiniteNumber(currentValue)
+            ? String(clamp(currentValue, 0, 1) * 100) + "%"
+            : "0%";
+          currentTrack.appendChild(currentFill);
+          bars.appendChild(baseTrack);
+          bars.appendChild(currentTrack);
+
+          var values = makeElement("div", "rubric-values");
+          values.appendChild(makeElement(
+            "span",
+            "",
+            "B " + formatScore(baseValue) + contributionText(base)
+          ));
+          values.appendChild(makeElement(
+            "span",
+            "",
+            "C " + formatScore(currentValue) + contributionText(current)
+          ));
+
+          row.appendChild(nameBlock);
+          row.appendChild(bars);
+          row.appendChild(values);
+          elements["rubric-list"].appendChild(row);
+        });
+      }
+
+      function contributionText(row) {
+        return row && isFiniteNumber(row.contribution)
+          ? " · +" + row.contribution.toFixed(3)
+          : "";
+      }
+
+      function renderBranchComparison() {
+        var baselineSummary = state.baseline && state.baseline.summary
+          ? state.baseline.summary
+          : {};
+        var branchSummary = state.branch && state.branch.summary
+          ? state.branch.summary
+          : {};
+        elements["baseline-score"].replaceChildren();
+        elements["baseline-score"].appendChild(document.createTextNode(
+          formatScore(baselineSummary.rubric_score) + " "
+        ));
+        elements["baseline-score"].appendChild(makeElement("small", "", "/ 1"));
+        elements["branch-score"].replaceChildren();
+        elements["branch-score"].appendChild(document.createTextNode(
+          formatScore(branchSummary.rubric_score) + " "
+        ));
+        elements["branch-score"].appendChild(makeElement("small", "", "/ 1"));
+
+        renderSummaryFacts(elements["baseline-facts"], state.baseline);
+        renderSummaryFacts(elements["branch-facts"], state.branch);
+
+        var delta = isFiniteNumber(branchSummary.rubric_score) &&
+          isFiniteNumber(baselineSummary.rubric_score)
+          ? branchSummary.rubric_score - baselineSummary.rubric_score
+          : null;
+        var deltaElement = elements["branch-score-delta"];
+        deltaElement.className = "score-delta";
+        if (isFiniteNumber(delta)) {
+          deltaElement.textContent = formatSigned(delta, "", 3) + " vs baseline";
+          if (delta > 0) {
+            deltaElement.classList.add("positive");
+          } else if (delta < 0) {
+            deltaElement.classList.add("negative");
+          }
+        } else {
+          deltaElement.textContent = "No branch delta";
+        }
+
+        var changed = branchHasChanged();
+        elements["branch-state"].textContent = changed ? "Modified" : "Unchanged";
+        elements["branch-state"].className = "mini-tag " + (changed ? "changed" : "recommended");
+        elements["comparison-note"].textContent = state.activeConfig
+          ? "Same flight-keyed world; shared flights keep their outcomes · seed " +
+            String(state.activeConfig.scenarioSeed) + " · " +
+            humanize(state.activeConfig.policyId)
+          : "Same flight-keyed world; shared flights keep their outcomes";
+        renderRubric();
+      }
+
+      function initialComparisonSelection() {
+        if (state.selectedStep !== 0 || !state.baseline || !state.branch) {
+          return null;
+        }
+        var baseStep = safeArray(state.baseline.steps)[0];
+        var branchStep = safeArray(state.branch.steps)[0];
+        var candidate = getSelectedCandidate();
+        if (!baseStep || !branchStep || !candidate) {
+          return null;
+        }
+        if (candidate.flight_id === baseStep.selected_flight_id) {
+          return null;
+        }
+        if (!candidateByFlightId(branchStep, candidate.flight_id)) {
+          return null;
+        }
+        return {
+          referenceFlightId: baseStep.selected_flight_id,
+          alternativeFlightId: candidate.flight_id
+        };
+      }
+
+      function renderRepeatComparison() {
+        elements["repeat-body"].replaceChildren();
+        var eligible = initialComparisonSelection();
+        if (!eligible) {
+          var text = state.selectedStep > 0
+            ? "Repeated-world comparisons are intentionally limited to starting flights. Select decision 1 and a different legal flight."
+            : "Select a different legal starting flight to compare it with the original baseline across 32 matched worlds.";
+          elements["repeat-body"].appendChild(makeElement("div", "repeat-placeholder", text));
+          renderControlState();
+          return;
+        }
+
+        if (!state.compare) {
+          var placeholder = makeElement("div", "repeat-placeholder");
+          var copy = makeElement(
+            "div",
+            "",
+            "Compare " + safeText(eligible.referenceFlightId, "baseline") + " with " +
+              safeText(eligible.alternativeFlightId, "alternative") +
+              " on seeds " + String(state.activeConfig.scenarioSeed) + " through " +
+              String(state.activeConfig.scenarioSeed + 31) + "."
+          );
+          var button = makeElement(
+            "button",
+            "primary-button",
+            state.busy.compare ? "Running comparison…" : "Run 32 matched worlds"
+          );
+          button.type = "button";
+          button.disabled = state.busy.compare;
+          button.style.marginTop = "13px";
+          button.addEventListener("click", runComparison);
+          placeholder.appendChild(copy);
+          placeholder.appendChild(button);
+          elements["repeat-body"].appendChild(placeholder);
+          renderControlState();
+          return;
+        }
+
+        var result = state.compare;
+        var grid = makeElement("div", "repeat-grid");
+        grid.appendChild(renderRepeatFlight(result.reference, "Baseline start", false, result.trials));
+
+        var deltas = makeElement("div", "repeat-deltas");
+        var deadline = makeElement("div", "repeat-delta");
+        deadline.appendChild(makeElement("span", "", "Deadline Δ"));
+        deadline.appendChild(makeElement(
+          "strong",
+          "",
+          isFiniteNumber(result.deadline_delta)
+            ? formatSigned(result.deadline_delta * 100, " pp", 1)
+            : "—"
+        ));
+        var arrival = makeElement("div", "repeat-delta");
+        arrival.appendChild(makeElement("span", "", "Arrival Δ"));
+        arrival.appendChild(makeElement(
+          "strong",
+          "",
+          isFiniteNumber(result.arrival_delta)
+            ? formatSigned(result.arrival_delta * 100, " pp", 1)
+            : "—"
+        ));
+        deltas.appendChild(deadline);
+        deltas.appendChild(arrival);
+        grid.appendChild(deltas);
+        grid.appendChild(renderRepeatFlight(result.alternative, "Alternative start", true, result.trials));
+        elements["repeat-body"].appendChild(grid);
+        elements["repeat-body"].appendChild(makeElement(
+          "p",
+          "repeat-scope",
+          safeText(
+            result.scope,
+            "Alternative-minus-reference rates from conditional simulator Monte Carlo; this is not predictive-model confidence."
+          )
+        ));
+        renderControlState();
+      }
+
+      function renderRepeatFlight(flight, label, alternative, trials) {
+        var card = makeElement("article", "repeat-flight" + (alternative ? " alternative" : ""));
+        card.appendChild(makeElement("span", "control-label", label));
+        card.appendChild(makeElement("h4", "", safeText(flight && flight.flight_id, "—")));
+        var stats = makeElement("div", "repeat-stats");
+        var total = isFiniteNumber(trials) && trials > 0 ? trials : null;
+        var rows = [
+          {
+            label: "Arrivals",
+            value: flight && isFiniteNumber(flight.arrived)
+              ? String(flight.arrived) + (total ? "/" + String(total) : "")
+              : "—"
+          },
+          {
+            label: "On time",
+            value: flight && isFiniteNumber(flight.on_time_arrivals)
+              ? String(flight.on_time_arrivals) + (total ? "/" + String(total) : "")
+              : "—"
+          },
+          {
+            label: "Mean score",
+            value: flight ? formatScore(flight.mean_score) : "—"
+          }
+        ];
+        rows.forEach(function (row) {
+          var item = makeElement("div", "repeat-stat");
+          item.appendChild(makeElement("span", "", row.label));
+          item.appendChild(makeElement("strong", "", row.value));
+          stats.appendChild(item);
+        });
+        card.appendChild(stats);
+        return card;
+      }
+
+      function renderProvenance() {
+        var provenance = state.catalog && state.catalog.provenance
+          ? state.catalog.provenance
+          : {};
+        elements["fit-window"].textContent = safeText(provenance.fit_window, "Not available");
+        elements["outcome-window"].textContent =
+          safeText(provenance.outcome_window, "Not available");
+        elements["provenance-scope"].textContent = safeText(
+          provenance.scope,
+          "Historical simulator scope not provided."
+        );
+      }
+
+      function renderWorkspace() {
+        renderRouteBrief();
+        renderCatalogControls();
+        renderTimeline();
+        renderDecisionOptions();
+        renderBranchComparison();
+        renderRepeatComparison();
+        renderProvenance();
+        renderControlState();
+      }
+
+      function syncControlsToActive() {
+        if (!state.activeConfig) {
+          return;
+        }
+        elements["scenario-seed"].value = String(state.activeConfig.scenarioSeed);
+        elements["policy-select"].value = state.activeConfig.policyId;
+      }
+
+      function defaultConfig(catalog) {
+        var defaults = catalog && catalog.defaults ? catalog.defaults : {};
+        var cases = safeArray(catalog && catalog.cases);
+        var policies = safeArray(catalog && catalog.policies);
+        var firstCase = cases[0] || {};
+        var firstPolicy = policies[0] || {};
+        return {
+          caseId: safeText(defaults.case_id, safeText(firstCase.id, "")),
+          scenarioSeed: isFiniteNumber(defaults.scenario_seed)
+            ? defaults.scenario_seed
+            : isFiniteNumber(firstCase.scenario_seed) ? firstCase.scenario_seed : 0,
+          policyId: safeText(defaults.policy_id, safeText(firstPolicy.id, "deadline_planner"))
+        };
+      }
+
+      function normalizeConfig(config) {
+        var seed = Number(config.scenarioSeed);
+        if (!Number.isSafeInteger(seed)) {
+          throw new Error("Scenario seed must be an exactly representable integer.");
+        }
+        return {
+          caseId: String(config.caseId),
+          scenarioSeed: seed,
+          policyId: String(config.policyId)
+        };
+      }
+
+      async function loadCatalog() {
+        var request = beginRequest("catalog");
+        setBusy("catalog", true);
+        clearError();
+        try {
+          var catalog = await fetchJson("/api/catalog", {
+            method: "GET"
+          }, request.controller.signal);
+          if (!requestIsCurrent("catalog", request.version)) {
+            return;
+          }
+          if (!catalog || !Array.isArray(catalog.cases) || !catalog.cases.length) {
+            throw new Error("The catalog did not include any curated trip cases.");
+          }
+          state.catalog = catalog;
+          state.busy.catalog = false;
+          renderCatalogControls();
+          renderProvenance();
+          await requestScenario(defaultConfig(catalog));
+        } catch (error) {
+          if (error && error.name === "AbortError") {
+            return;
+          }
+          if (requestIsCurrent("catalog", request.version)) {
+            state.busy.catalog = false;
+            setError(error instanceof Error ? error.message : String(error), "catalog");
+            renderWorkspace();
+          }
+        } finally {
+          if (requestIsCurrent("catalog", request.version)) {
+            state.busy.catalog = false;
+            renderStatus();
+            renderControlState();
+          }
+        }
+      }
+
+      async function requestScenario(rawConfig) {
+        var config;
+        try {
+          config = normalizeConfig(rawConfig);
+        } catch (error) {
+          setError(error.message, "scenario");
+          syncControlsToActive();
+          return;
+        }
+
+        clearReplayTimer();
+        abortRequest("branch");
+        abortRequest("compare");
+        state.busy.branch = false;
+        state.busy.compare = false;
+        state.compare = null;
+        state.requestedConfig = config;
+        var request = beginRequest("replay");
+        setBusy("replay", true);
+        clearError();
+
+        try {
+          var replay = await fetchJson("/api/replay", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              case_id: config.caseId,
+              scenario_seed: config.scenarioSeed,
+              policy_id: config.policyId,
+              choices: []
+            })
+          }, request.controller.signal);
+          if (!requestIsCurrent("replay", request.version) ||
+              configKey(state.requestedConfig) !== configKey(config)) {
+            return;
+          }
+
+          state.baseline = replay;
+          state.branch = replay;
+          state.activeConfig = config;
+          state.selectedStep = 0;
+          state.visibleSteps = 1;
+          var firstStep = safeArray(replay.steps)[0];
+          state.selectedCandidateId = firstStep ? firstStep.selected_flight_id : null;
+          state.compare = null;
+          clearError();
+          renderWorkspace();
+        } catch (error) {
+          if (error && error.name === "AbortError") {
+            return;
+          }
+          if (requestIsCurrent("replay", request.version)) {
+            setError(
+              (error instanceof Error ? error.message : String(error)) +
+                (state.baseline ? " Previous successful results are still shown." : ""),
+              "scenario"
+            );
+            syncControlsToActive();
+          }
+        } finally {
+          if (requestIsCurrent("replay", request.version)) {
+            state.busy.replay = false;
+            renderStatus();
+            renderControlState();
+          }
+        }
+      }
+
+      async function chooseSelectedFlight() {
+        var step = getSelectedStep();
+        var candidate = getSelectedCandidate();
+        if (!step || !candidate || !state.activeConfig || !state.branch) {
+          return;
+        }
+        if (candidate.flight_id === step.selected_flight_id) {
+          return;
+        }
+
+        clearReplayTimer();
+        var choiceIndex = state.selectedStep;
+        var prefix = safeArray(state.branch.choices).slice(0, choiceIndex);
+        prefix.push(candidate.flight_id);
+        var activeKey = configKey(state.activeConfig);
+        var request = beginRequest("branch");
+        abortRequest("compare");
+        state.compare = null;
+        setBusy("branch", true);
+        clearError();
+
+        try {
+          var replay = await fetchJson("/api/replay", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              case_id: state.activeConfig.caseId,
+              scenario_seed: state.activeConfig.scenarioSeed,
+              policy_id: state.activeConfig.policyId,
+              choices: prefix
+            })
+          }, request.controller.signal);
+          if (!requestIsCurrent("branch", request.version) ||
+              configKey(state.activeConfig) !== activeKey) {
+            return;
+          }
+
+          state.branch = replay;
+          var newSteps = safeArray(replay.steps);
+          state.selectedStep = clamp(choiceIndex, 0, Math.max(0, newSteps.length - 1));
+          state.visibleSteps = clamp(
+            Math.max(state.visibleSteps, state.selectedStep + 2),
+            1,
+            Math.max(1, newSteps.length)
+          );
+          var newStep = newSteps[state.selectedStep];
+          state.selectedCandidateId = newStep ? newStep.selected_flight_id : null;
+          clearError();
+          renderWorkspace();
+        } catch (error) {
+          if (error && error.name === "AbortError") {
+            return;
+          }
+          if (requestIsCurrent("branch", request.version)) {
+            setError(
+              (error instanceof Error ? error.message : String(error)) +
+                " The previous branch remains visible.",
+              "branch"
+            );
+          }
+        } finally {
+          if (requestIsCurrent("branch", request.version)) {
+            state.busy.branch = false;
+            renderStatus();
+            renderControlState();
+          }
+        }
+      }
+
+      function resetBranch() {
+        if (!state.baseline) {
+          return;
+        }
+        abortRequest("branch");
+        abortRequest("compare");
+        clearReplayTimer();
+        state.busy.branch = false;
+        state.busy.compare = false;
+        state.branch = state.baseline;
+        state.compare = null;
+        state.selectedStep = 0;
+        state.visibleSteps = 1;
+        var firstStep = safeArray(state.branch.steps)[0];
+        state.selectedCandidateId = firstStep ? firstStep.selected_flight_id : null;
+        clearError();
+        renderWorkspace();
+      }
+
+      async function runComparison() {
+        var selection = initialComparisonSelection();
+        if (!selection || !state.activeConfig) {
+          return;
+        }
+        var activeKey = configKey(state.activeConfig);
+        var request = beginRequest("compare");
+        setBusy("compare", true);
+        clearError();
+        renderRepeatComparison();
+
+        try {
+          var result = await fetchJson("/api/compare", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              case_id: state.activeConfig.caseId,
+              scenario_seed: state.activeConfig.scenarioSeed,
+              policy_id: state.activeConfig.policyId,
+              reference_flight_id: selection.referenceFlightId,
+              alternative_flight_id: selection.alternativeFlightId,
+              trials: 32
+            })
+          }, request.controller.signal);
+          if (!requestIsCurrent("compare", request.version) ||
+              configKey(state.activeConfig) !== activeKey) {
+            return;
+          }
+          var currentSelection = initialComparisonSelection();
+          if (!currentSelection ||
+              currentSelection.referenceFlightId !== selection.referenceFlightId ||
+              currentSelection.alternativeFlightId !== selection.alternativeFlightId) {
+            return;
+          }
+          state.compare = result;
+          clearError();
+        } catch (error) {
+          if (error && error.name === "AbortError") {
+            return;
+          }
+          if (requestIsCurrent("compare", request.version)) {
+            setError(
+              (error instanceof Error ? error.message : String(error)) +
+                " The single-world replay remains visible.",
+              "compare"
+            );
+          }
+        } finally {
+          if (requestIsCurrent("compare", request.version)) {
+            state.busy.compare = false;
+            renderStatus();
+            renderRepeatComparison();
+          }
+        }
+      }
+
+      function stepTimeline(direction) {
+        var steps = state.branch ? safeArray(state.branch.steps) : [];
+        if (!steps.length) {
+          return;
+        }
+        clearReplayTimer();
+        state.visibleSteps = clamp(state.visibleSteps + direction, 1, steps.length);
+        if (state.selectedStep >= state.visibleSteps) {
+          state.selectedStep = state.visibleSteps - 1;
+          var step = steps[state.selectedStep];
+          state.selectedCandidateId = step ? step.selected_flight_id : null;
+          state.compare = null;
+          abortRequest("compare");
+        }
+        renderWorkspace();
+      }
+
+      function revealAll() {
+        var steps = state.branch ? safeArray(state.branch.steps) : [];
+        if (!steps.length) {
+          return;
+        }
+        clearReplayTimer();
+        state.visibleSteps = steps.length;
+        renderWorkspace();
+      }
+
+      function replayTimeline() {
+        var steps = state.branch ? safeArray(state.branch.steps) : [];
+        if (!steps.length) {
+          return;
+        }
+        clearReplayTimer();
+        state.visibleSteps = 1;
+        state.selectedStep = 0;
+        state.selectedCandidateId = steps[0] ? steps[0].selected_flight_id : null;
+        state.compare = null;
+        abortRequest("compare");
+        renderWorkspace();
+        if (steps.length <= 1 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          return;
+        }
+        state.replayTimer = window.setInterval(function () {
+          if (state.visibleSteps >= steps.length) {
+            clearReplayTimer();
+            return;
+          }
+          state.visibleSteps += 1;
+          state.selectedStep = state.visibleSteps - 1;
+          var step = steps[state.selectedStep];
+          state.selectedCandidateId = step ? step.selected_flight_id : null;
+          renderWorkspace();
+        }, 720);
+      }
+
+      function retryLastFailure() {
+        if (!state.error) {
+          return;
+        }
+        var retryKind = state.error.retryKind;
+        clearError();
+        if (retryKind === "catalog") {
+          loadCatalog();
+        } else if (retryKind === "branch") {
+          chooseSelectedFlight();
+        } else if (retryKind === "compare") {
+          runComparison();
+        } else if (state.requestedConfig || state.activeConfig) {
+          requestScenario(state.requestedConfig || state.activeConfig);
+        }
+      }
+
+      function bindEvents() {
+        elements["scenario-seed"].addEventListener("change", function () {
+          if (!state.activeConfig) {
+            return;
+          }
+          requestScenario({
+            caseId: state.activeConfig.caseId,
+            scenarioSeed: Number(elements["scenario-seed"].value),
+            policyId: state.activeConfig.policyId
+          });
+        });
+        elements["scenario-seed"].addEventListener("keydown", function (event) {
+          if (event.key === "Enter") {
+            elements["scenario-seed"].blur();
+          }
+        });
+        elements["next-scenario"].addEventListener("click", function () {
+          if (!state.activeConfig) {
+            return;
+          }
+          requestScenario({
+            caseId: state.activeConfig.caseId,
+            scenarioSeed: state.activeConfig.scenarioSeed + 1,
+            policyId: state.activeConfig.policyId
+          });
+        });
+        elements["policy-select"].addEventListener("change", function () {
+          if (!state.activeConfig) {
+            return;
+          }
+          requestScenario({
+            caseId: state.activeConfig.caseId,
+            scenarioSeed: state.activeConfig.scenarioSeed,
+            policyId: elements["policy-select"].value
+          });
+        });
+        elements["step-back"].addEventListener("click", function () {
+          stepTimeline(-1);
+        });
+        elements["step-forward"].addEventListener("click", function () {
+          stepTimeline(1);
+        });
+        elements["reveal-all"].addEventListener("click", revealAll);
+        elements["replay-path"].addEventListener("click", replayTimeline);
+        elements["reset-branch"].addEventListener("click", resetBranch);
+        elements["choose-flight"].addEventListener("click", chooseSelectedFlight);
+        elements["status-action"].addEventListener("click", retryLastFailure);
+      }
+
+      function initialize() {
+        cacheElements();
+        bindEvents();
+        renderWorkspace();
+        loadCatalog();
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initialize, { once: true });
+      } else {
+        initialize();
+      }
+    }());
+  </script>
+</body>
+</html>

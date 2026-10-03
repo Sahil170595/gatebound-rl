@@ -1,0 +1,26 @@
+[
+  {
+    "id": "synthetic-request-sfo-jfk",
+    "label": "Invented request: SFO to JFK",
+    "description": "Code-owned synthetic passenger request for an optional public BTS backend. No prerecorded outcome or policy advantage is asserted.",
+    "origin": "SFO",
+    "destination": "JFK",
+    "ready_utc": 28949040,
+    "deadline_utc": 28949760,
+    "horizon_utc": 28950480,
+    "scenario_seed": 42,
+    "policy_id": "nonstop_first"
+  },
+  {
+    "id": "synthetic-request-jfk-sfo",
+    "label": "Invented request: JFK to SFO",
+    "description": "A second invented passenger request. Historical schedules and outcomes, if downloaded, are inputs to a retrospective simulator, not seat availability.",
+    "origin": "JFK",
+    "destination": "SFO",
+    "ready_utc": 28949040,
+    "deadline_utc": 28949760,
+    "horizon_utc": 28950480,
+    "scenario_seed": 43,
+    "policy_id": "deadline_planner"
+  }
+]

@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Data / artifacts
+data/
+*.parquet
+*.zip
+
+# Notebooks
+.ipynb_checkpoints
+
+# Testing / linting
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Generated experiment reports and partial downloads
+results/
+*.part
+
+# Local release verification artifacts
+.release-qa/

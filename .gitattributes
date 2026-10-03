@@ -1,0 +1,7 @@
+# Stable source bytes on Windows, including when core.autocrlf=true.
+*.py text eol=lf
+*.toml text eol=lf
+*.txt text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.html text eol=lf

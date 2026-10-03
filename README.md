@@ -14,12 +14,12 @@ Separate schedule, fitting and transition sources support held-out policy evalua
 putting future outcomes into the visible observation.
 
 [Portfolio](https://chimeraforge.vercel.app/work) |
-[Browser demo](https://chimeraforge.vercel.app/work/projects/flight-routing) |
+[Browser demo](https://chimeraforge.vercel.app/projects/reinforcement-learning/flight-routing) |
 [Design](docs/DESIGN.md) | [Data and credits](THIRD_PARTY.md)
 
-**Browser-demo status:** the separate, reduced synthetic browser edition is in
-[PR #58](https://github.com/Sahil170595/Banterblogs/pull/58), pending merge. Its public route was
-not live when this release was prepared. The Python system below runs independently of it.
+**Browser demo:** a separate, reduced synthetic edition runs in the browser: four policies over the
+same 64 seeded worlds, any one replayed decision by decision. It has its own fixture and seeds; the
+Python system below runs independently of it.
 
 ## Start Offline
 
